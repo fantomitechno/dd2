@@ -1,0 +1,55 @@
+---
+import type { UserLeaderboard, UserLive } from "../../types/leaderboard";
+import { timeDifference } from "../../utils/time";
+
+interface Props {
+  wsid: string;
+  data_pb: UserLeaderboard;
+}
+
+const { wsid, data_pb } = Astro.props;
+
+const LIVE_ROUTE = "https://dips-plus-plus.xk.io/live_heights/" + wsid;
+
+const response_live = await fetch(LIVE_ROUTE);
+
+const data_live: UserLive = await response_live.json();
+---
+
+<table
+  hx-swap="outerHTML"
+  hx-get={"/api/user/" + wsid}
+  hx-trigger="every 20s"
+  hx-target="this"
+>
+  <tr>
+    <td> Rank </td>
+    <td> PB </td>
+    <td> Actual </td>
+    <td> Last update from their plug-in </td>
+  </tr>
+  <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td> {data_pb.rank} </td>
+    <td> {data_pb.height.toFixed(2)} </td>
+    <td> {data_live.last_5_points[0]![0]!.toFixed(2)} </td>
+    <td>
+      {timeDifference(Date.now(), data_live.last_5_points[0]![1]! * 1000)}
+    </td>
+  </tr>
+</table>
+
+<style>
+  table {
+    width: 100%;
+  }
+
+  .spacer {
+    height: 1rem;
+  }
+</style>

@@ -1,0 +1,23 @@
+---
+import Link from "../components/Link.astro";
+---
+
+<nav class="nav">
+  <Link href="/" activeClass="active" exact>leaderboard</Link>
+  <Link href="/live" activeClass="active">live ranking</Link>
+</nav>
+
+<style>
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 0.25rem;
+    margin-bottom: 2rem;
+    gap: 6px 32px;
+    text-transform: lowercase;
+  }
+
+  nav .active {
+    background-position-x: 0;
+  }
+</style>

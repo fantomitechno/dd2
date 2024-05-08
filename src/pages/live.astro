@@ -1,0 +1,17 @@
+---
+import GlobalLayout from "../layouts/GlobalLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import LiveLeaderboard from "../components/Deeping/LiveLeaderboard.astro";
+import Loader from "../components/Loader.astro";
+---
+
+<GlobalLayout title="Deep dip 2 live ranking">
+  <PageHeader>Leaderboard</PageHeader>
+  <Loader />
+  <div class="spacer"></div>
+
+  <LiveLeaderboard />
+
+  * Current rank is the rank they have right now, imagine Lars being at the
+  start, he'll be displayed as 100th or something
+</GlobalLayout>

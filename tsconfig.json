@@ -1,0 +1,11 @@
+{
+  "extends": "astro/tsconfigs/strictest",
+  "compilerOptions": {
+    "types": [
+      "astro/client"
+    ],
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "jsx": "preserve"
+  }
+}

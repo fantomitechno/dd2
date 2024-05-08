@@ -1,0 +1,19 @@
+<i>
+  This page is updating itself every 20s, please refrain from refreshing it
+</i>
+
+<span id="last-update">Last update was 0 seconds ago</span>
+
+<script>
+  const el = document.getElementById("last-update");
+  console.log("t");
+
+  let i = 0;
+  setInterval(() => {
+    i++;
+    if (el) el.innerText = `Last update was ${i} seconds ago`;
+  }, 1000);
+  document.addEventListener("htmx:afterRequest", (_) => {
+    i = 0;
+  });
+</script>

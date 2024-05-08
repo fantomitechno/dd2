@@ -1,0 +1,18 @@
+---
+import PlayerData from "../../../components/Deeping/PlayerData.astro";
+import type { UserLeaderboard } from "../../../types/leaderboard";
+
+const { wsid } = Astro.params;
+
+if (!wsid) return Astro.redirect("/", 303);
+
+const PB_ROUTE = "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
+
+const response_pb = await fetch(PB_ROUTE);
+
+if (response_pb.status == 500) return Astro.redirect("/");
+
+const data_pb: UserLeaderboard = await response_pb.json();
+---
+
+<PlayerData wsid={wsid} data_pb={data_pb} />

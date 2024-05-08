@@ -1,0 +1,104 @@
+---
+/*!
+ * Copyright (c) Cynthia Rey, All rights reserved.
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice, this
+ *    list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the copyright holder nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software without
+ *    specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+import UnderlinedHeading from "./UnderlinedHeading.astro";
+---
+
+<header
+  class:list={{
+    "has-subtitle": Astro.slots.has("subtitle") || Astro.slots.has("surname"),
+  }}
+>
+  <UnderlinedHeading level={1} class="title">
+    <slot />
+  </UnderlinedHeading>{
+    Astro.slots.has("surname") && (
+      <div class="surname">
+        <slot name="surname" />
+      </div>
+    )
+  }
+  {
+    Astro.slots.has("subtitle") && (
+      <div class="subtitle">
+        <slot name="subtitle" />
+      </div>
+    )
+  }
+</header>
+
+<style>
+  header {
+    margin-bottom: 1.5rem;
+    padding-left: 6rem;
+    position: relative;
+    display: flex;
+    min-height: 5.5em;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .has-subtitle {
+    margin-bottom: 1.75rem;
+  }
+
+  header::before {
+    content: "";
+    position: absolute;
+    width: 5rem;
+    height: 5rem;
+    top: 4px;
+    left: -0.5em;
+    transform: rotate(15deg);
+    background-image: url("../assets/deep_dip_2.jpg");
+    background-size: 5rem 5rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    border: 0.2rem solid #e2931d;
+  }
+
+  .title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 2.4rem;
+  }
+
+  .subtitle {
+    margin: 0;
+    margin-top: -0.1rem;
+    font-weight: 400;
+    font-size: 1.6rem;
+  }
+
+  .surname {
+    margin: 0;
+    margin-top: -0.1rem;
+    font-weight: 300;
+    font-size: 1.4rem;
+  }
+</style>

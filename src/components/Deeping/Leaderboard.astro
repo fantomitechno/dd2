@@ -1,0 +1,57 @@
+---
+import type { Leaderboard } from "../../types/leaderboard";
+
+interface Props {
+  page: number;
+}
+
+const { page } = Astro.props;
+
+const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/" + page;
+
+const reponse = await fetch(ROUTE);
+
+const data: Leaderboard = await reponse.json();
+
+const players = data.sort((a, b) => a.rank - b.rank);
+---
+
+<table>
+  <tr>
+    <td> Rank </td>
+    <td> Name </td>
+    <td> Height </td>
+  </tr>
+  <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  {
+    players.map((player) => {
+      return (
+        <tr>
+          <td>{player.rank}</td>
+          <td>
+            <a href={"/user/" + player.wsid}>{player.name}</a>
+          </td>
+          <td>{player.height.toFixed(2)}</td>
+        </tr>
+      );
+    })
+  }
+</table>
+
+<style>
+  table {
+    width: 100%;
+  }
+
+  tr {
+    margin: 0.2rem 0;
+  }
+
+  .spacer {
+    height: 1rem;
+  }
+</style>

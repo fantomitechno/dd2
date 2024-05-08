@@ -1,0 +1,64 @@
+---
+import type { LiveLeaderboard } from "../../types/leaderboard";
+import { timeDifference } from "../../utils/time";
+
+const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
+
+const reponse = await fetch(ROUTE);
+
+const data: LiveLeaderboard = await reponse.json();
+
+const players = data
+  .sort((a, b) => b.height - a.height)
+  .filter((p) => p.height > 30 && p.rank < 100);
+
+const now = Date.now();
+---
+
+<table
+  hx-swap="outerHTML"
+  hx-get={"/api/live"}
+  hx-trigger="every 20s"
+  hx-target="this"
+>
+  <tr>
+    <td> Curent Rank* </td>
+    <td> Name </td>
+    <td> Height </td>
+    <td> Last update from their plug-in</td>
+  </tr>
+  <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  {
+    players.map((player) => {
+      return (
+        <tr>
+          <td>{player.rank}</td>
+          <td>
+            <a href={"/user/" + player.user_id}>{player.display_name}</a>
+          </td>
+          <td>{player.height.toFixed(2)}</td>
+          <td>{timeDifference(now, player.ts * 1000)}</td>
+        </tr>
+      );
+    })
+  }
+</table>
+
+<style is:inline>
+  table {
+    width: 100%;
+  }
+
+  tr {
+    margin: 0.2rem 0;
+  }
+
+  .spacer {
+    margin: 0.5rem;
+  }
+</style>

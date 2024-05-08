@@ -1,0 +1,23 @@
+{
+  "name": "@personal/dd2",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.5.1",
+    "@astrojs/node": "^8.2.0",
+    "@types/node": "^20.11.17",
+    "astro": "^4.3.5",
+    "sharp": "^0.33.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "skinview3d": "^3.0.1"
+  }
+}
