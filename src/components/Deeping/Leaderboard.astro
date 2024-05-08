@@ -1,5 +1,6 @@
 ---
 import type { Leaderboard } from "../../types/leaderboard";
+import { headers } from "../../utils/headers";
 
 interface Props {
   page: number;
@@ -9,7 +10,7 @@ const { page } = Astro.props;
 
 const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/" + page;
 
-const reponse = await fetch(ROUTE);
+const reponse = await fetch(ROUTE, { headers });
 
 const data: Leaderboard = await reponse.json();
 

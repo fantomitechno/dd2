@@ -1,10 +1,11 @@
 ---
 import type { LiveLeaderboard } from "../../types/leaderboard";
+import { headers } from "../../utils/headers";
 import { timeDifference } from "../../utils/time";
 
 const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
 
-const reponse = await fetch(ROUTE);
+const reponse = await fetch(ROUTE, { headers });
 
 const data: LiveLeaderboard = await reponse.json();
 

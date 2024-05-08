@@ -1,5 +1,6 @@
 ---
 import type { UserLeaderboard, UserLive } from "../../types/leaderboard";
+import { headers } from "../../utils/headers";
 import { timeDifference } from "../../utils/time";
 
 interface Props {
@@ -11,7 +12,7 @@ const { wsid, data_pb } = Astro.props;
 
 const LIVE_ROUTE = "https://dips-plus-plus.xk.io/live_heights/" + wsid;
 
-const response_live = await fetch(LIVE_ROUTE);
+const response_live = await fetch(LIVE_ROUTE, { headers });
 
 const data_live: UserLive = await response_live.json();
 ---
