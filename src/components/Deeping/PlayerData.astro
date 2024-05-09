@@ -1,6 +1,7 @@
 ---
 import type { UserLeaderboard, UserLive } from "../../types/api";
 import { getRoute } from "../../utils/cache";
+import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
 
 interface Props {
@@ -23,11 +24,15 @@ const data_live: UserLive = await getRoute(LIVE_ROUTE);
 >
   <tr>
     <td> Rank </td>
+    <td> PB Floor </td>
     <td> PB </td>
-    <td> Actual </td>
-    <td> Last update from their plug-in </td>
+    <td> Current Floor </td>
+    <td> Current Height </td>
+    <td> Last update* </td>
   </tr>
   <tr id="spacer">
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -35,7 +40,9 @@ const data_live: UserLive = await getRoute(LIVE_ROUTE);
   </tr>
   <tr>
     <td> {data_pb.rank} </td>
+    <td> {heightToFloor(data_pb.height)} </td>
     <td> {data_pb.height.toFixed(2)} </td>
+    <td> {heightToFloor(data_live.last_5_points[0]![0]!)} </td>
     <td> {data_live.last_5_points[0]![0]!.toFixed(2)} </td>
     <td>
       {timeDifference(Date.now(), data_live.last_5_points[0]![1]! * 1000)}

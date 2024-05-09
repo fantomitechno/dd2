@@ -1,6 +1,7 @@
 ---
 import type { LiveLeaderboard } from "../../types/api";
 import { getRoute } from "../../utils/cache";
+import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
 
 const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
@@ -23,10 +24,12 @@ const now = Date.now();
   <tr>
     <td> Curent Rank* </td>
     <td> Name </td>
+    <td> Floor </td>
     <td> Height </td>
-    <td> Last update from their plug-in</td>
+    <td> Last update**</td>
   </tr>
   <tr id="spacer">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -40,6 +43,7 @@ const now = Date.now();
           <td>
             <a href={"/user/" + player.user_id}>{player.display_name}</a>
           </td>
+          <td>{heightToFloor(player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
           <td>{timeDifference(now, player.ts * 1000)}</td>
         </tr>

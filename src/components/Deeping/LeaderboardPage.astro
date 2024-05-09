@@ -1,6 +1,7 @@
 ---
 import type { Leaderboard } from "../../types/api";
 import { getRoute } from "../../utils/cache";
+import { heightToFloor } from "../../utils/floor";
 
 interface Props {
   page: number;
@@ -19,9 +20,11 @@ const players = data.sort((a, b) => a.rank - b.rank);
   <tr>
     <td> Rank </td>
     <td> Name </td>
+    <td> Floor </td>
     <td> Height </td>
   </tr>
   <tr id="spacer">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -34,6 +37,7 @@ const players = data.sort((a, b) => a.rank - b.rank);
           <td>
             <a href={"/user/" + player.wsid}>{player.name}</a>
           </td>
+          <td>{heightToFloor(player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
         </tr>
       );
