@@ -1,13 +1,11 @@
 ---
-import type { LiveLeaderboard } from "../../types/leaderboard";
-import { headers } from "../../utils/headers";
+import type { LiveLeaderboard } from "../../types/api";
+import { getRoute } from "../../utils/cache";
 import { timeDifference } from "../../utils/time";
 
 const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
 
-const reponse = await fetch(ROUTE, { headers });
-
-const data: LiveLeaderboard = await reponse.json();
+const data: LiveLeaderboard = await getRoute(ROUTE);
 
 const players = data
   .sort((a, b) => b.height - a.height)
@@ -48,18 +46,18 @@ const now = Date.now();
       );
     })
   }
+
+  <style is:inline>
+    table {
+      width: 100%;
+    }
+
+    tr {
+      margin: 0.2rem 0;
+    }
+
+    .spacer {
+      margin: 0.5rem;
+    }
+  </style>
 </table>
-
-<style is:inline>
-  table {
-    width: 100%;
-  }
-
-  tr {
-    margin: 0.2rem 0;
-  }
-
-  .spacer {
-    margin: 0.5rem;
-  }
-</style>

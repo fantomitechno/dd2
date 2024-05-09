@@ -5,13 +5,19 @@ import LiveLeaderboard from "../components/Deeping/LiveLeaderboard.astro";
 import Loader from "../components/Loader.astro";
 ---
 
-<GlobalLayout title="Deep dip 2 live ranking">
-  <PageHeader>Leaderboard</PageHeader>
+<GlobalLayout title="live ranking | DD2">
+  <PageHeader>Live ranking</PageHeader>
   <Loader />
   <div class="spacer"></div>
 
   <LiveLeaderboard />
-
-  * Current rank is the rank they have right now, imagine Lars being at the
-  start, he'll be displayed as 100th or something
+  <div class="spacer"></div>
+  <span>
+    * Current rank is the rank they have right now, imagine Lars being at the
+    start, he'll be displayed as 100th or something
+  </span>
+  <i>
+    btw, this website is kinda lying: I filter and hide everyone currently under
+    30m and show only 100 players
+  </i>
 </GlobalLayout>

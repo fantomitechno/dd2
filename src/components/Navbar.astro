@@ -3,8 +3,10 @@ import Link from "../components/Link.astro";
 ---
 
 <nav class="nav">
-  <Link href="/" activeClass="active" exact>leaderboard</Link>
+  <Link href="/leaderboard" activeClass="active" exact>leaderboard</Link>
   <Link href="/live" activeClass="active">live ranking</Link>
+  <Link href="/overview" activeClass="active">overview</Link>
+  <Link href="/" activeClass="active" exact={true}>about this website</Link>
 </nav>
 
 <style>

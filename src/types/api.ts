@@ -21,8 +21,22 @@ type UserLiveLeaderboard = {
   rank: number
 }
 
+type Overview = {
+  falls: number,
+  falls_raw: number,
+  floors_fallen: number,
+  height_fallen: number,
+  jumps: number,
+  nb_players_climbing: number,
+  nb_players_live: number,
+  players: number,
+  resets: number,
+  sessions: number,
+  ts: number
+}
+
 type Leaderboard = UserLeaderboard[]
 
 type LiveLeaderboard = UserLiveLeaderboard[]
 
-export type { UserLeaderboard, UserLive, Leaderboard, LiveLeaderboard }
+export type { UserLeaderboard, UserLive, Leaderboard, LiveLeaderboard, Overview }

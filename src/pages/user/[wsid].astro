@@ -2,10 +2,10 @@
 import PageHeader from "../../components/PageHeader.astro";
 import GlobalLayout from "../../layouts/GlobalLayout.astro";
 
-import type { UserLeaderboard } from "../../types/leaderboard";
+import type { UserLeaderboard } from "../../types/api";
 import PlayerData from "../../components/Deeping/PlayerData.astro";
 import Loader from "../../components/Loader.astro";
-import { headers } from "../../utils/headers";
+import { getRoute } from "../../utils/cache";
 
 const { wsid } = Astro.params;
 
@@ -13,16 +13,14 @@ if (!wsid) return Astro.redirect("/", 303);
 
 const PB_ROUTE = "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
 
-const response_pb = await fetch(PB_ROUTE, { headers });
+const data: UserLeaderboard = await getRoute(PB_ROUTE);
 
-if (response_pb.status == 500) return Astro.redirect("/");
-
-const data_pb: UserLeaderboard = await response_pb.json();
+if (!data) return Astro.redirect("/");
 ---
 
-<GlobalLayout title={`informations for ${data_pb.name} | DD2`}>
-  <PageHeader>Informations on {data_pb.name}</PageHeader>
+<GlobalLayout title={`informations for ${data.name} | DD2`}>
+  <PageHeader>Informations on {data.name}</PageHeader>
   <Loader />
   <div class="spacer"></div>
-  <PlayerData wsid={wsid} data_pb={data_pb} />
+  <PlayerData wsid={wsid} data_pb={data} />
 </GlobalLayout>

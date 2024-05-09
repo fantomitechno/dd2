@@ -1,19 +1,45 @@
 ---
 import GlobalLayout from "../layouts/GlobalLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
-import Leaderboard from "../components/Deeping/Leaderboard.astro";
-
-const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
 ---
 
-<GlobalLayout title="Deep dip 2 leaderboard">
-  <PageHeader>Leaderboard</PageHeader>
+<GlobalLayout title="about | DD2">
+  <PageHeader>
+    Deep Dip 2 dot renoux dot dev
+    <Fragment slot="surname">or dd2.renoux.dev</Fragment>
+    <Fragment slot="subtitle">a website by fantomitechno</Fragment>
+  </PageHeader>
 
-  <Leaderboard page={page} />
+  <span>
+    This websiste is created for the <a
+      href="https://matcherino.com/tournaments/111501"
+    >
+      Deep Dip 2 event</a
+    >
+    fell free to donate to the price pool with the link before or join their
+    <a href="">Discord</a>
+  </span>
   <div class="spacer"></div>
 
   <span>
-    {page > 0 && <a href={"/?page=" + (page - 1)}>{"<--"}</a>}
-    <a href={"/?page=" + (page + 1)}>{"-->"}</a>
+    Also support XertroV, the person who did the API I use for this website, he
+    made the <a href="https://openplanet.dev/plugin/dips-plus-plus">plug-in</a>
+    for the event too and all the work he did is very impressive!
+  </span>
+
+  <div class="spacer"></div>
+
+  <span>
+    Anyway, fellow DD2 watcher or competitor, let's go, scrap this website for
+    it's data! They're all yours, displayed as cleanly as I could!
+  </span>
+
+  <div class="spacer"></div>
+  <span>
+    The style of this website is eavely inspired by <a
+      href="https://cynthia.dev"
+    >
+      cynthia.dev</a
+    > go check her out!
   </span>
 </GlobalLayout>

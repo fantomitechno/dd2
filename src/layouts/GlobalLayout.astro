@@ -42,10 +42,7 @@ const title = t || "Simon Renoux";
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
 const description = d || "*fox*";
 
-const now = new Date();
-const christmas = now.getMonth() === 11;
-
-const icon = christmas ? "/favicon-christmas.ico" : "/favicon.ico";
+const icon = "/favicon.ico";
 ---
 
 <!doctype html>
@@ -60,7 +57,7 @@ const icon = christmas ? "/favicon-christmas.ico" : "/favicon.ico";
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
 
-    <meta property="og:site_name" content="simon.renoux.dev" />
+    <meta property="og:site_name" content="dd2.renoux.dev" />
     <meta property="og:type" property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />

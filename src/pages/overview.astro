@@ -1,0 +1,48 @@
+---
+import GlobalLayout from "../layouts/GlobalLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import type { Overview } from "../types/api";
+import { getRoute } from "../utils/cache";
+
+const ROUTE = "https://dips-plus-plus.xk.io/overview";
+const data: Overview = await getRoute(ROUTE);
+---
+
+<GlobalLayout title="overview | DD2">
+  <PageHeader> Overview </PageHeader>
+
+  <Section title="Falls">
+    There was {data.falls} falls, equivalent to {data.height_fallen.toFixed(2)}m
+    fallen or {data.floors_fallen} floors... imagine if it was the over way around:
+    DD2 would have been <b>
+      finished
+      {(data.floors_fallen / 17).toFixed(1)} times</b
+    >!
+  </Section>
+
+  <Section title="Jumps">
+    This one is gonna be a bit more straight forward: there was {data.jumps} jumps...
+    yeah that's it lmao. I don't know what to add. Oh wait! Collectively, the players
+    <b>
+      ran {(data.jumps / 10).toFixed(0)} 100-meter hurdles
+    </b> (you can check on wikipedia it's 10 hurdles for 100m)
+  </Section>
+
+  <Section title="Resets">
+    In total, there was {data.resets} resets, that means {data.resets} attempt to
+    climp this tower... yes <b>{data.resets}</b> you heard me right... well you read
+    me right
+  </Section>
+
+  <Section title="Players">
+    Some statistics about the event itself! There's {data.players} registred by the
+    plug-in. And right now, there is <b>
+      {data.nb_players_climbing} players climbing
+    </b> and {data.nb_players_live} players connected to the plug-in right now, as
+    you're reading this!
+  </Section>
+
+  I'm at the end of the datas provided by XertroV through his beautiful API, go
+  thank him, he deserves the world for his work!
+</GlobalLayout>
