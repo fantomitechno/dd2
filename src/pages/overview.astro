@@ -14,7 +14,7 @@ const data: Overview = await getRoute(ROUTE);
 
   <Section title="Falls">
     There was {data.falls} falls, equivalent to {data.height_fallen.toFixed(2)}m
-    fallen or {data.floors_fallen} floors... imagine if it was the over way around:
+    fallen or {data.floors_fallen} floors... imagine if it was the other way around:
     DD2 would have been <b>
       finished
       {(data.floors_fallen / 17).toFixed(1)} times</b
@@ -39,8 +39,8 @@ const data: Overview = await getRoute(ROUTE);
     Some statistics about the event itself! There's {data.players} registred by the
     plug-in. And right now, there is <b>
       {data.nb_players_climbing} players climbing
-    </b> and {data.nb_players_live} players connected to the plug-in right now, as
-    you're reading this!
+    </b> and {data.nb_players_live} players connected to the plug-in, as you're reading
+    this!
   </Section>
 
   I'm at the end of the datas provided by XertroV through his beautiful API, go

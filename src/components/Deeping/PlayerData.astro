@@ -30,11 +30,13 @@ const connected = Boolean(data_live.last_5_points.length);
       <td> Rank </td>
       <td> PB Floor </td>
       <td> PB </td>
+      <td> PB obtained </td>
       {connected && <td> Current Floor </td>}
       {connected && <td> Current Height </td>}
       {connected && <td> Last update* </td>}
     </tr>
     <tr id="spacer">
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
@@ -46,6 +48,7 @@ const connected = Boolean(data_live.last_5_points.length);
       <td> {data_pb.rank} </td>
       <td> {heightToFloor(data_pb.height)} </td>
       <td> {data_pb.height.toFixed(2)} </td>
+      <td> {timeDifference(Date.now(), data_pb.ts * 1000)} </td>
       {connected && <td> {heightToFloor(data_live.last_5_points[0]![0]!)} </td>}
       {connected && <td> {data_live.last_5_points[0]![0]!.toFixed(2)} </td>}
       {
