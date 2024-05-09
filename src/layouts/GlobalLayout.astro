@@ -35,12 +35,13 @@ interface Props {
 }
 
 import socialImage from "../assets/social-image.png";
+import deepDip2 from "../assets/deep_dip_2.jpg";
 
 const { title: t, description: d } = Astro.props;
 
-const title = t || "Simon Renoux";
+const title = t || "DD2";
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site);
-const description = d || "*fox*";
+const description = d || "falling right now";
 
 const icon = "/favicon.ico";
 ---
@@ -62,13 +63,19 @@ const icon = "/favicon.ico";
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={socialImage.src} />
+    <meta
+      property="og:image"
+      content={Math.random() > 0.5 ? socialImage.src : deepDip2.src}
+    />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@fantomitechno" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
-    <meta name="twitter:image" content={socialImage.src} />
+    <meta
+      name="twitter:image"
+      content={Math.random() > 0.5 ? socialImage.src : deepDip2.src}
+    />
   </head>
   <body>
     <div id="page-contents">
