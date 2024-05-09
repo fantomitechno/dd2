@@ -4,7 +4,7 @@ import image from './build/image.js';
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://mc.renoux.dev",
+  site: "https://dd2.renoux.dev",
   output: "server",
   adapter: node({
     mode: "standalone"

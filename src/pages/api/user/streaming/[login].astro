@@ -1,0 +1,38 @@
+---
+const { login } = Astro.params;
+const isLive =
+  login &&
+  (await (await fetch(`https://twitch.tv/${login}`)).text()).includes(
+    "isLiveBroadcast",
+  );
+---
+
+{isLive && <div class="spacer" />}
+{
+  isLive && (
+    <div>
+      They are live on
+      <a href={"https://twitch.tv/" + login}>https://twitch.tv/{login}</a>
+      <div class="spacer" />
+      <iframe
+        src={`https://player.twitch.tv/?channel=${login}&parent=${Astro.url.host}&muted=true`}
+      />
+      <style>
+        iframe {
+          height: 27rem;
+          width: 48rem;
+        }
+      </style>
+    </div>
+  )
+}
+{
+  !isLive && (
+    <div
+      hx-swap="outerHTML"
+      hx-get={"/api/user/streaming/" + login}
+      hx-trigger="every 30s"
+      hx-target="this"
+    />
+  )
+}

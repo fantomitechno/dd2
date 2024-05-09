@@ -1,7 +1,7 @@
 {
   "name": "@personal/dd2",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.5",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -18,6 +18,6 @@
     "typescript": "^5.3.3"
   },
   "dependencies": {
-    "skinview3d": "^3.0.1"
+    "trackmania.io": "^3.2.2"
   }
 }

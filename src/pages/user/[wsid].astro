@@ -2,27 +2,42 @@
 import PageHeader from "../../components/PageHeader.astro";
 import GlobalLayout from "../../layouts/GlobalLayout.astro";
 
-import type { UserLeaderboard } from "../../types/api";
 import PlayerData from "../../components/Deeping/PlayerData.astro";
 import Loader from "../../components/Loader.astro";
-import { getRoute } from "../../utils/cache";
+import { getUserInfo } from "../../utils/tm-io";
 
 const { wsid } = Astro.params;
 
 if (!wsid) return Astro.redirect("/", 303);
 
-const PB_ROUTE = "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
+const playerInfo = await getUserInfo(wsid);
 
-const data: UserLeaderboard = await getRoute(PB_ROUTE);
+if (!playerInfo) return Astro.redirect("/");
 
-if (!data) return Astro.redirect("/");
+const twitch = playerInfo.meta.twitch
+  ?.replace("https://www.twitch.tv/", "")
+  .replace("https://twitch.tv/", "")
+  .replace("/", "");
 ---
 
-<GlobalLayout title={`informations for ${data.name} | DD2`}>
-  <PageHeader>Informations on {data.name}</PageHeader>
+<GlobalLayout title={`informations for ${playerInfo.name} | DD2`}>
+  <PageHeader>Informations on {playerInfo.name}</PageHeader>
   <Loader />
   <div class="spacer"></div>
-  <PlayerData wsid={wsid} data_pb={data} />
+  <PlayerData wsid={wsid} />
   <div class="spacer"></div>
-  <span> * Last update from their plug-in </span>
+  <span>
+    See informations on {playerInfo.name} over @
+    <a href={playerInfo.meta.displayURL}>trackmania.io</a>
+  </span>
+  {
+    twitch && (
+      <div
+        hx-swap="outerHTML"
+        hx-get={"/api/user/streaming/" + twitch}
+        hx-trigger="load"
+        hx-target="this"
+      />
+    )
+  }
 </GlobalLayout>
