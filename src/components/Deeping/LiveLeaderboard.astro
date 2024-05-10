@@ -10,7 +10,7 @@ const data: LiveLeaderboard = await getRoute(ROUTE);
 
 const players = data
   .sort((a, b) => b.height - a.height)
-  .filter((p) => p.height > 30 && p.rank < 100);
+  .filter((p) => p.height > 30 && p.rank <= 100);
 
 const now = Date.now();
 ---

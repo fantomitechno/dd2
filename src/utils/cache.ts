@@ -13,14 +13,17 @@ const headers = new Headers({
   'User-Agent': 'dd2.renoux.dev'
 });
 
-export const getRoute = async (route: string): Promise<any> => {
+export const getRoute = async (route: string, text: boolean = false): Promise<any> => {
   if (cache[route] && Date.now() - cache[route]!.timestamp < cacheTime) {
     return cache[route]!.data;
   }
 
   const response = await fetch(route, { headers });
-  if (!response.ok) return null;
-  const data = await response.json();
+  if (!response.ok) {
+    cache[route] = { timestamp: Date.now(), data: null };
+    return null
+  };
+  const data = text ? await response.text() : await response.json();
   cache[route] = { timestamp: Date.now(), data };
   return data;
 }

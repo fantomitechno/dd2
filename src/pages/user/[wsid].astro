@@ -5,6 +5,7 @@ import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import PlayerData from "../../components/Deeping/PlayerData.astro";
 import Loader from "../../components/Loader.astro";
 import { getUserInfo } from "../../utils/tm-io";
+import { getRoute } from "../../utils/cache";
 
 const { wsid } = Astro.params;
 
@@ -14,10 +15,17 @@ const playerInfo = await getUserInfo(wsid);
 
 if (!playerInfo) return Astro.redirect("/");
 
-const twitch = playerInfo.meta.twitch
+let twitch: string | undefined = playerInfo.meta.twitch
   ?.replace("https://www.twitch.tv/", "")
   .replace("https://twitch.tv/", "")
   .replace("/", "");
+
+if (!twitch) {
+  const RENTRY_ROUTE = "https://rentry.org/dd2-players-twitch/raw";
+  const twitch_map: { [id: string]: string } = await getRoute(RENTRY_ROUTE);
+
+  twitch = twitch_map[wsid];
+}
 ---
 
 <GlobalLayout title={`informations for ${playerInfo.name} | DD2`}>
@@ -40,6 +48,14 @@ const twitch = playerInfo.meta.twitch
         hx-trigger="load"
         hx-target="this"
       />
+    )
+  }
+  {
+    !twitch && (
+      <div>
+        If this player should have a twitch username, contact @fantomitechno on
+        Discord to add it manually!
+      </div>
     )
   }
 </GlobalLayout>
