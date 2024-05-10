@@ -21,7 +21,7 @@ const LIVE_ROUTE = "https://dips-plus-plus.xk.io/live_heights/" + wsid;
 const data_pb: UserLeaderboard = await getRoute(PB_ROUTE);
 const data_live: UserLive = await getRoute(LIVE_ROUTE);
 
-const connected = data_live.last_5_points.length && data_live.last_5_points[0]![1]! * 1000 < Date.now() - 10 * 1000 * 60;
+const connected = data_live.last_5_points.length && data_live.last_5_points[0]![1]! * 1000 > Date.now() - 10 * 1000 * 60;
 
 let live_rank = 0;
 if (connected) {
