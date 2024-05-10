@@ -1,4 +1,6 @@
 ---
+import Section from "../../../../components/Section.astro";
+
 const { login } = Astro.params;
 const isLive =
   login &&
@@ -10,9 +12,9 @@ const isLive =
 {isLive && <div class="spacer" />}
 {
   isLive && (
-    <div>
+    <Section title="Stream">
       They are live on
-      <a href={"https://twitch.tv/" + login}>https://twitch.tv/{login}</a>
+      <a href={"https://twitch.tv/" + login} target="_blank" rel="noreferrer">https://twitch.tv/{login}</a>
       <div class="spacer" />
       <iframe
         src={`https://player.twitch.tv/?channel=${login}&parent=${Astro.url.host}&muted=true`}
@@ -23,7 +25,7 @@ const isLive =
           width: 48rem;
         }
       </style>
-    </div>
+    </Section>
   )
 }
 {

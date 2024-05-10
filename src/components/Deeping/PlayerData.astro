@@ -1,8 +1,13 @@
 ---
-import type { UserLeaderboard, UserLive } from "../../types/api";
+import type {
+  LiveLeaderboard,
+  UserLeaderboard,
+  UserLive,
+} from "../../types/api";
 import { getRoute } from "../../utils/cache";
 import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
+import Section from "../Section.astro";
 
 interface Props {
   wsid: string;
@@ -17,6 +22,14 @@ const data_pb: UserLeaderboard = await getRoute(PB_ROUTE);
 const data_live: UserLive = await getRoute(LIVE_ROUTE);
 
 const connected = Boolean(data_live.last_5_points.length);
+
+let live_rank = 0;
+if (connected) {
+  const GLOBAL_ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
+  const data_global: LiveLeaderboard = await getRoute(GLOBAL_ROUTE);
+  const data = data_global.find((p) => p.user_id == wsid);
+  if (data) live_rank = data.rank;
+}
 ---
 
 <div
@@ -25,52 +38,67 @@ const connected = Boolean(data_live.last_5_points.length);
   hx-trigger="every 20s"
   hx-target="this"
 >
-  <table>
-    <tr>
-      <td> Rank </td>
-      <td> PB Floor </td>
-      <td> PB </td>
-      <td> PB obtained </td>
-      {connected && <td> Current Floor </td>}
-      {connected && <td> Current Height </td>}
-      {connected && <td> Last update* </td>}
-    </tr>
-    <tr id="spacer">
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      {connected && <td />}
-      {connected && <td />}
-      {connected && <td />}
-    </tr>
-    <tr>
-      <td> {data_pb.rank} </td>
-      <td> {heightToFloor(data_pb.height)} </td>
-      <td> {data_pb.height.toFixed(2)} </td>
-      <td> {timeDifference(Date.now(), data_pb.ts * 1000)} </td>
-      {connected && <td> {heightToFloor(data_live.last_5_points[0]![0]!)} </td>}
-      {connected && <td> {data_live.last_5_points[0]![0]!.toFixed(2)} </td>}
-      {
-        connected && (
-          <td>
-            {timeDifference(Date.now(), data_live.last_5_points[0]![1]! * 1000)}
-          </td>
-        )
-      }
-    </tr>
+  <Section title="Informations on pb">
+    <table>
+      <tr>
+        <td> Rank </td>
+        <td> PB Floor </td>
+        <td> PB </td>
+        <td> PB obtained at </td>
+      </tr>
+      <tr id="spacer">
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td> {data_pb.rank} </td>
+        <td> {heightToFloor(data_pb.height)} </td>
+        <td> {data_pb.height.toFixed(2)} </td>
+        <td> {timeDifference(Date.now(), data_pb.ts * 1000)} </td>
+      </tr>
+    </table>
+  </Section>
+  {
+    connected && (
+      <Section title="Informations on current">
+        <table>
+          <tr>
+            <td> Current rank </td>
+            <td> Current Floor </td>
+            <td> Current Height </td>
+            <td> Last update* </td>
+          </tr>
+          <tr>
+            <td> {live_rank} </td>
+            <td> {heightToFloor(data_live.last_5_points[0]![0]!)} </td>
+            <td> {data_live.last_5_points[0]![0]!.toFixed(2)} </td>
+            <td>
+              {timeDifference(
+                Date.now(),
+                data_live.last_5_points[0]![1]! * 1000,
+              )}
+            </td>
+          </tr>
+        </table>
+        <div class="spacer" />
+        <span> * Last update from their plug-in </span>
+      </Section>
+    )
+  }
 
-    <style>
-      table {
-        width: 100%;
-      }
+  <style>
+    table {
+      width: 100%;
+    }
 
-      .spacer {
-        height: 1rem;
-      }
-    </style>
-  </table>
+    td {
+      width: 25%;
+    }
 
-  <div class="spacer"></div>
-  <span> * Last update from their plug-in </span>
+    .spacer {
+      height: 1rem;
+    }
+  </style>
 </div>
