@@ -1,10 +1,11 @@
 ---
 import Section from "../../../../components/Section.astro";
+import { getRoute } from "../../../../utils/cache";
 
 const { login } = Astro.params;
 const isLive =
   login &&
-  (await (await fetch(`https://twitch.tv/${login}`)).text()).includes(
+  (await getRoute(`https://twitch.tv/${login}`, true)).includes(
     "isLiveBroadcast",
   );
 ---
