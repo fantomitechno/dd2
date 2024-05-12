@@ -30,5 +30,5 @@ export const GET: APIRoute = async ({ url }) => {
 
   const data = await getRoute(ROUTE(result));
 
-  return new Response(JSON.stringify(data && { error: false }), { status: 200 });
+  return new Response(JSON.stringify({ ...data, error: false }), { status: 200 });
 }
