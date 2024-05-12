@@ -41,7 +41,7 @@ const populatePlayerCache = async () => {
   const promises = [];
 
   for (let i = 0; i < 100; i++) {
-    promises.push(getRoute(ROUTE(i), false, 60 * 1000));
+    promises.push(getRoute(ROUTE(i), false, 24 * 60 * 60 * 1000));
   }
 
   const bigLb: Leaderboard[] = await Promise.all(promises);
@@ -56,7 +56,7 @@ const populatePlayerCache = async () => {
 }
 
 const getPlayer = async (playerName: string) => {
-  if (Date.now() - lastPlayerCacheUpdate > 60 * 1000) {
+  if (Date.now() - lastPlayerCacheUpdate > 24 * 60 * 60 * 1000) {
     await populatePlayerCache();
   }
 
