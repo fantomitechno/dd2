@@ -21,7 +21,7 @@ let twitch: string | undefined = playerInfo.meta.twitch
   .replace("/", "");
 
 if (!twitch) {
-  const RENTRY_ROUTE = "https://rentry.org/dd2-players-twitch/raw";
+  const RENTRY_ROUTE = "https://rentry.co/dd2-players-twitch/raw";
   const twitch_map: { [id: string]: string } = await getRoute(RENTRY_ROUTE);
 
   twitch = twitch_map[wsid];
