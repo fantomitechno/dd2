@@ -60,10 +60,12 @@ const getPlayer = async (playerName: string) => {
     await populatePlayerCache();
   }
 
-  const foundUsername = Object.keys(playerCache).find(p => similarity(p, playerName) > 0.8 || quickSimilarity(p, playerName));
+  const foundUsername = Object.keys(playerCache).filter(p => similarity(p, playerName) > 0.8 || quickSimilarity(p, playerName));
 
-  if (!foundUsername) return null;
-  return playerCache[foundUsername];
+  if (!foundUsername.length) return null;
+
+  const bestMatch = (foundUsername.sort((a, b) => similarity(a, playerName) - similarity(b, playerName))[0] as string);
+  return playerCache[bestMatch];
 }
 
 export { getRoute, getPlayer };
