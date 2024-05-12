@@ -11,6 +11,10 @@ export const GET: APIRoute = async ({ url }) => {
     return new Response(JSON.stringify({ message: "No username specified" }), { status: 400 });
   }
 
+  if (username.length < 4) {
+    return new Response(JSON.stringify({ message: "Username should be longer than 4 characters" }), { status: 400 })
+  }
+
   let lb: Leaderboard = await getRoute(ROUTE);
 
   let result = lb.find(p => similarity(p.name, username) > 0.8 || quickSimilarity(p.name, username));
