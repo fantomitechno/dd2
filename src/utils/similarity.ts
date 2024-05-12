@@ -18,6 +18,7 @@ const editDistance = (s1: string, s2: string) => {
     }
     if (i > 0) costs[s2.length] = lastValue;
   }
+  console.log(costs)
   return costs[s2.length];
 };
 
@@ -34,3 +35,14 @@ export const similarity = (s1: string, s2: string) => {
   }
   return (longerLength - editDistance(longer, shorter)) / longerLength;
 };
+
+export const quickSimilarity = (s1: string, s2: string) => {
+  var longer = s1.toLowerCase();
+  var shorter = s2.toLowerCase();
+  if (s1.length < s2.length) {
+    longer = s2.toLowerCase();
+    shorter = s1.toLowerCase();
+  }
+
+  return longer.startsWith(shorter) && similarity(s1, s2) > 0.4
+}
