@@ -4,7 +4,8 @@ type UserLeaderboard = {
   height: number,
   ts: number,
   name: string,
-  update_count: number
+  update_count: number,
+  colors: number[]
 }
 
 type UserLive = {
