@@ -1,0 +1,23 @@
+---
+import GlobalLayout from "../layouts/GlobalLayout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+
+import { getCacheSize, getPlayerCacheSize } from "../utils/cache";
+import { getVisites } from "../utils/analytics";
+---
+
+<GlobalLayout title="admin | DD2">
+  <PageHeader>admin</PageHeader>
+  Hello this page isn't really a secret it's just to get some analitics on the usage
+  of the website!
+
+  <Section title="Requests">
+    Size of request cache: {getCacheSize()}
+    <br />
+    Size of player cache: {getPlayerCacheSize()}
+  </Section>
+  <Section title="Visits">
+    Got {getVisites(10 * 60 * 1000)} in the last 10 minutes
+  </Section>
+</GlobalLayout>

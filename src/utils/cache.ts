@@ -8,6 +8,7 @@ let cache: {
   }
 } = {};
 
+
 let lastPlayerCacheUpdate = -1;
 let playerCache: {
   [name: string]: string
@@ -18,6 +19,9 @@ const headers = new Headers({
   'Accept': 'application/json',
   'User-Agent': 'dd2.renoux.dev'
 });
+
+const getCacheSize = () => Object.keys(cache).length;
+const getPlayerCacheSize = () => Object.keys(playerCache).length;
 
 const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 * 20): Promise<any> => {
   if (cache[route] && Date.now() - cache[route]!.timestamp < cacheTime) {
@@ -33,7 +37,6 @@ const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 *
   cache[route] = { timestamp: Date.now(), data };
   return data;
 }
-
 
 const ROUTE = (page: number) => `https://dips-plus-plus.xk.io/leaderboard/global/${page}`;
 
@@ -68,4 +71,4 @@ const getPlayer = async (playerName: string) => {
   return playerCache[bestMatch];
 }
 
-export { getRoute, getPlayer };
+export { getRoute, getPlayer, getCacheSize, getPlayerCacheSize };
