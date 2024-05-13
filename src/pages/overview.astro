@@ -13,34 +13,47 @@ const data: Overview = await getRoute(ROUTE);
   <PageHeader> Overview </PageHeader>
 
   <Section title="Falls">
-    There was {data.falls} falls, equivalent to {data.height_fallen.toFixed(2)}m
-    fallen or {data.floors_fallen} floors... imagine if it was the other way around:
-    DD2 would have been <b>
+    There was {data.falls.toLocaleString()} falls, equivalent to {
+      data.height_fallen.toLocaleString(undefined, { maximumFractionDigits: 2 })
+    }m fallen or {data.floors_fallen.toLocaleString()} floors... imagine if it was
+    the other way around: DD2 would have been <b>
       finished
-      {(data.floors_fallen / 17).toFixed(1)} times</b
+      {
+        (data.floors_fallen / 17).toLocaleString(undefined, {
+          maximumFractionDigits: 1,
+        })
+      } times</b
     >!
   </Section>
 
   <Section title="Jumps">
-    This one is gonna be a bit more straight forward: there was {data.jumps} jumps...
-    yeah that's it lmao. I don't know what to add. Oh wait! Collectively, the players
+    This one is gonna be a bit more straight forward: there was {
+      data.jumps.toLocaleString()
+    } jumps... yeah that's it lmao. I don't know what to add. Oh wait! Collectively,
+    the players
     <b>
-      ran {(data.jumps / 10).toFixed(0)} 100-meter hurdles
+      ran {
+        (data.jumps / 10).toLocaleString(undefined, {
+          maximumFractionDigits: 1,
+        })
+      } 100-meter hurdles
     </b> (you can check on wikipedia it's 10 hurdles for 100m)
   </Section>
 
   <Section title="Resets">
-    In total, there was {data.resets} resets, that means {data.resets} attempt to
-    climp this tower... yes <b>{data.resets}</b> you heard me right... well you read
-    me right
+    In total, there was {data.resets.toLocaleString()} resets, that means {
+      data.resets.toLocaleString()
+    } attempt to climp this tower... yes <b>{data.resets.toLocaleString()}</b> you
+    heard me right... well you read me right
   </Section>
 
   <Section title="Players">
-    Some statistics about the event itself! There's {data.players} registred by the
-    plug-in. And right now, there is <b>
-      {data.nb_players_climbing} players climbing
-    </b> and {data.nb_players_live} players connected to the plug-in, as you're reading
-    this!
+    Some statistics about the event itself! There's {
+      data.players.toLocaleString()
+    } registred by the plug-in. And right now, there is <b>
+      {data.nb_players_climbing.toLocaleString()} players climbing
+    </b> and {data.nb_players_live.toLocaleString()} players connected to the plug-in,
+    as you're reading this!
   </Section>
 
   I'm at the end of the datas provided by XertroV through his beautiful API, go
