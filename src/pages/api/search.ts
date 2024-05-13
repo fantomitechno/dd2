@@ -7,15 +7,13 @@ export const GET: APIRoute = async ({ url }) => {
   const username = url.searchParams.get("username");
   if (!username) {
     return new Response(JSON.stringify({
-      message: "No username specified",
-      error: true
+      message: "No username specified"
     }), { status: 400 });
   }
 
   if (username.length < 4) {
     return new Response(JSON.stringify({
-      message: "Username should be longer than 4 characters",
-      error: true
+      message: "Username should be longer than 4 characters"
     }), { status: 400 })
   }
 
@@ -23,12 +21,11 @@ export const GET: APIRoute = async ({ url }) => {
 
   if (!result) {
     return new Response(JSON.stringify({
-      message: "User not found in the first 100 pages of the leaderboard",
-      error: true
+      message: "User not found in the first 100 pages of the leaderboard"
     }), { status: 404 });
   }
 
   const data = await getRoute(ROUTE(result));
 
-  return new Response(JSON.stringify({ ...data, error: false }), { status: 200 });
+  return new Response(JSON.stringify(data), { status: 200 });
 }
