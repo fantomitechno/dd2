@@ -1,5 +1,5 @@
 ---
-import type { LiveLeaderboard } from "../../types/api";
+import type { LiveLeaderboard, UserLeaderboard } from "../../types/api";
 import { getRoute } from "../../utils/cache";
 import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
@@ -11,6 +11,20 @@ const data: LiveLeaderboard = await getRoute(ROUTE);
 const players = data
   .sort((a, b) => b.height - a.height)
   .filter((p) => p.height > 30 && p.rank <= 100);
+
+let playersToPb: {
+  [wsid: string]: UserLeaderboard;
+} = {};
+
+for (const p of players) {
+  const ROUTE = `https://dips-plus-plus.xk.io/leaderboard/${p.user_id}`;
+  let pbData: UserLeaderboard = await getRoute(ROUTE, false, 5 * 60 * 1000);
+  if (pbData.height - p.height < 100 && p.height / pbData.height > 0.75) {
+    pbData = await getRoute(ROUTE); // refresh more!
+  }
+
+  playersToPb[p.user_id] = pbData;
+}
 
 const now = Date.now();
 ---
@@ -26,9 +40,11 @@ const now = Date.now();
     <td> Name </td>
     <td> Floor </td>
     <td> Height </td>
+    <td> PB </td>
     <td> Last update**</td>
   </tr>
   <tr id="spacer">
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -45,6 +61,7 @@ const now = Date.now();
           </td>
           <td>{heightToFloor(player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
+          <td>{playersToPb[player.user_id]?.height.toFixed(2)}</td>
           <td>{timeDifference(now, player.ts * 1000)}</td>
         </tr>
       );
