@@ -63,11 +63,17 @@ const getPlayer = async (playerName: string) => {
     await populatePlayerCache();
   }
 
+  var exactMatch = Object.keys(playerCache).find(name => name.toLowerCase() == playerName)
+
+  if (exactMatch) {
+    return playerCache[exactMatch];
+  }
+
   const foundUsername = Object.keys(playerCache).filter(p => similarity(p, playerName) > 0.8 || quickSimilarity(p, playerName));
 
   if (!foundUsername.length) return null;
 
-  const bestMatch = (foundUsername.sort((a, b) => similarity(a, playerName) - similarity(b, playerName))[0] as string);
+  const bestMatch = ((foundUsername.sort((a, b) => similarity(b, playerName) - similarity(a, playerName)))[0] as string);
   return playerCache[bestMatch];
 }
 
