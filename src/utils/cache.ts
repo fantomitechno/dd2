@@ -43,7 +43,6 @@ const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 *
   return data;
 }
 
-
 const addPbToCache = (data: UserLeaderboard) => {
   pbCache[data.wsid] = data;
 }
@@ -52,11 +51,10 @@ const getPb = (wsid: string) => {
   return pbCache[wsid];
 }
 
-
 const populatePlayerCache = async () => {
   const promises = [];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i <= 150; i++) {
     promises.push(getLeaderboardPage(i));
   }
 
