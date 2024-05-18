@@ -1,16 +1,10 @@
 ---
 import type { LiveLeaderboard } from "../../types/api";
-import { getRoute } from "../../utils/cache";
+import { getLiveGlobalHeight } from "../../utils/api";
 import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
 
-const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
-
-const data: LiveLeaderboard = await getRoute(ROUTE);
-
-const players = data
-  .sort((a, b) => b.height - a.height)
-  .filter((p) => p.height > 30 && p.rank <= 100);
+const players = await getLiveGlobalHeight();
 
 const now = Date.now();
 ---
@@ -26,9 +20,15 @@ const now = Date.now();
     <td> Name </td>
     <td> Floor </td>
     <td> Height </td>
+    <td> PB Rank </td>
+    <td> PB </td>
+    <td> PB Floor </td>
     <td> Last update**</td>
   </tr>
   <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -45,6 +45,9 @@ const now = Date.now();
           </td>
           <td>{heightToFloor(player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
+          <td>{player.pbRank ?? "N/A"}</td>
+          <td>{player.pbHeight?.toFixed(2) ?? "N/A"}</td>
+          <td>{player.pbHeight ? heightToFloor(player.pbHeight) : "N/A"}</td>
           <td>{timeDifference(now, player.ts * 1000)}</td>
         </tr>
       );

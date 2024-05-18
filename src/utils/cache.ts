@@ -1,4 +1,5 @@
-import type { Leaderboard } from "../types/api";
+import type { UserLeaderboard } from "../types/api";
+import { getLeaderboardPage } from "./api";
 import { quickSimilarity, similarity } from "./similarity";
 
 let cache: {
@@ -12,6 +13,10 @@ let cache: {
 let lastPlayerCacheUpdate = -1;
 let playerCache: {
   [name: string]: string
+} = {};
+
+let pbCache: {
+  [wsid: string]: UserLeaderboard
 } = {};
 
 const headers = new Headers({
@@ -38,16 +43,24 @@ const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 *
   return data;
 }
 
-const ROUTE = (page: number) => `https://dips-plus-plus.xk.io/leaderboard/global/${page}`;
+
+const addPbToCache = (data: UserLeaderboard) => {
+  pbCache[data.wsid] = data;
+}
+
+const getPb = (wsid: string) => {
+  return pbCache[wsid];
+}
+
 
 const populatePlayerCache = async () => {
   const promises = [];
 
   for (let i = 0; i < 100; i++) {
-    promises.push(getRoute(ROUTE(i), false, 24 * 60 * 60 * 1000));
+    promises.push(getLeaderboardPage(i));
   }
 
-  const bigLb: Leaderboard[] = await Promise.all(promises);
+  const bigLb = await Promise.all(promises);
 
   for (const lb of bigLb) {
     for (const player of lb) {
@@ -77,4 +90,4 @@ const getPlayer = async (playerName: string) => {
   return playerCache[bestMatch];
 }
 
-export { getRoute, getPlayer, getCacheSize, getPlayerCacheSize };
+export { getRoute, getPlayer, getCacheSize, getPlayerCacheSize, addPbToCache, getPb };

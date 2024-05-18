@@ -1,6 +1,5 @@
 ---
-import type { Leaderboard } from "../../types/api";
-import { getRoute } from "../../utils/cache";
+import { getLeaderboardPage } from "../../utils/api";
 import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
 
@@ -10,11 +9,7 @@ interface Props {
 
 const { page } = Astro.props;
 
-const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/" + page;
-
-const data: Leaderboard = await getRoute(ROUTE);
-
-const players = data.sort((a, b) => a.rank - b.rank);
+const players = await getLeaderboardPage(page);
 ---
 
 <table>

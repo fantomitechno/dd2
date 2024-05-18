@@ -1,7 +1,6 @@
 import type { APIRoute } from "astro";
-import { getPlayer, getRoute } from "../../utils/cache";
-
-const ROUTE = (wsid: string) => "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
+import { getPlayer } from "../../utils/cache";
+import { getPlayerPb } from "../../utils/api";
 
 export const GET: APIRoute = async ({ url }) => {
   const username = url.searchParams.get("username");
@@ -28,7 +27,7 @@ export const GET: APIRoute = async ({ url }) => {
     }), { status: 200 });
   }
 
-  const data = await getRoute(ROUTE(result));
+  const data = await getPlayerPb(result);
 
   return new Response(JSON.stringify({ ...data, error: false }), { status: 200 });
 }
