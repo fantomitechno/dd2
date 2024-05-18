@@ -46,7 +46,7 @@ const description = d || "falling right now";
 
 const icon = "/favicon.ico";
 
-addVisite(Astro.request.headers.get("X-Frowarded-For") ?? "no-ip-huh?");
+addVisite(Astro.request.headers.get("X-Forwarded-For") ?? "no-ip-huh?");
 ---
 
 <!doctype html>
