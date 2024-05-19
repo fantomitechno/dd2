@@ -21,7 +21,7 @@ const getLiveGlobalHeight = async () => {
     .filter((p) => p.height > 30 && p.rank <= 100)
     .map(p => {
       const pb = getPb(p.user_id);
-      if (!pb) {
+      if (!pb || Date.now() - pb.ts * 1000 > 60 * 60 * 1000) {
         getPlayerPb(p.user_id)
       }
       return {
@@ -48,7 +48,7 @@ const getPlayerData = async (wsid: string) => {
 
   const dataLive: UserLive = await getRoute(LIVE_ROUTE);
 
-  const connected = dataLive.last_5_points.length && dataLive.last_5_points[0]![1]! * 1000 > Date.now() - 10 * 1000 * 60;
+  const connected = dataLive.last_5_points.length && Date.now() - dataLive.last_5_points[0]![1]! * 1000 > 10 * 60 * 1000;
 
   let liveRank = 0;
   if (connected) {
