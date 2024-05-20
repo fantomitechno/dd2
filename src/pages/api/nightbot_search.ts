@@ -3,6 +3,9 @@ import { getPlayer } from "../../utils/cache";
 import { getPlayerPb } from "../../utils/api";
 
 export const GET: APIRoute = async ({ url }) => {
+  return new Response(JSON.stringify({
+    message: "API was disabled",
+  }), { status: 200 });
   const username = url.searchParams.get("username");
   if (!username) {
     return new Response(JSON.stringify({
