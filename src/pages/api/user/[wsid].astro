@@ -1,9 +1,12 @@
 ---
 import PlayerData from "../../../components/deepdip/PlayerData.astro";
+import { getPlayerData } from "../../../utils/api";
 
 const { wsid } = Astro.params;
 
 if (!wsid) return Astro.redirect("/", 303);
+
+const data = await getPlayerData(wsid);
 ---
 
-<PlayerData wsid={wsid} />
+<PlayerData data={data} />

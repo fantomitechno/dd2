@@ -1,5 +1,7 @@
-import type { Leaderboard, LiveLeaderboard, UserLeaderboard, UserLive } from "../types/api";
+import type { Leaderboard, LiveLeaderboard, TwitchUsers, UserLeaderboard, UserLive } from "../types/api";
+import type { GobalLiveHeight, PlayerData } from "../types/internal_api";
 import { addPbToCache, getPb, getRoute } from "./cache";
+import { getTwitchForWsid } from "./cache/twitch_cache";
 
 const getLeaderboardPage = async (page: number) => {
   const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/" + page;
@@ -11,7 +13,7 @@ const getLeaderboardPage = async (page: number) => {
   return data.sort((a, b) => a.rank - b.rank);
 }
 
-const getLiveGlobalHeight = async () => {
+const getLiveGlobalHeight = async (): Promise<GobalLiveHeight> => {
   const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
 
   const data: LiveLeaderboard = await getRoute(ROUTE);
@@ -41,14 +43,14 @@ const getPlayerPb = async (wsid: string) => {
   return dataPb;
 }
 
-const getPlayerData = async (wsid: string) => {
+const getPlayerData = async (wsid: string): Promise<PlayerData> => {
   const dataPb = await getPlayerPb(wsid);
 
   const LIVE_ROUTE = "https://dips-plus-plus.xk.io/live_heights/" + wsid;
 
   const dataLive: UserLive = await getRoute(LIVE_ROUTE);
 
-  const connected = dataLive.last_5_points.length && Date.now() - dataLive.last_5_points[0]![1]! * 1000 > 10 * 60 * 1000;
+  const connected = dataLive.last_5_points.length != 0 && Date.now() - dataLive.last_5_points[0]![1]! * 1000 > 10 * 60 * 1000;
 
   let liveRank = 0;
   if (connected) {
@@ -58,8 +60,12 @@ const getPlayerData = async (wsid: string) => {
     if (data) liveRank = data.rank;
   }
 
+  const twitch = await getTwitchForWsid(wsid);
+
   return {
     name: dataPb.name,
+    wsid: wsid,
+    twitchUser: twitch,
     pbRank: dataPb.rank,
     pbHeight: dataPb.height,
     pbTs: dataPb.ts,
@@ -70,4 +76,10 @@ const getPlayerData = async (wsid: string) => {
   }
 }
 
-export { getLeaderboardPage, getLiveGlobalHeight, getPlayerData, getPlayerPb }
+const getTwitchUsers = async () => {
+  const ROUTE = "https://dips-plus-plus.xk.io/twitch/list";
+  const data: TwitchUsers = await getRoute(ROUTE);
+  return data;
+}
+
+export { getLeaderboardPage, getLiveGlobalHeight, getPlayerData, getPlayerPb, getTwitchUsers }

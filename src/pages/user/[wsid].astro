@@ -3,59 +3,29 @@ import PageHeader from "../../components/PageHeader.astro";
 import GlobalLayout from "../../layouts/GlobalLayout.astro";
 
 import Loader from "../../components/Loader.astro";
-import { getUserInfo } from "../../utils/tm-io";
-import { getRoute } from "../../utils/cache";
 import PlayerData from "../../components/deepdip/PlayerData.astro";
+import { getPlayerData } from "../../utils/api";
 
 const { wsid } = Astro.params;
 
 if (!wsid) return Astro.redirect("/", 303);
 
-const playerInfo = await getUserInfo(wsid);
-
-if (!playerInfo) return Astro.redirect("/");
-
-let twitch: string | undefined = playerInfo.meta.twitch
-  ?.replace("https://www.twitch.tv/", "")
-  .replace("https://twitch.tv/", "")
-  .replace("/", "");
-
-if (!twitch) {
-  const RENTRY_ROUTE = "https://rentry.co/dd2-players-twitch/raw";
-  const twitch_map: { [id: string]: string } = await getRoute(RENTRY_ROUTE);
-
-  twitch = twitch_map[wsid];
-}
+const data = await getPlayerData(wsid);
 ---
 
-<GlobalLayout title={`informations for ${playerInfo.name} | DD2`}>
-  <PageHeader>Informations on {playerInfo.name}</PageHeader>
+<GlobalLayout title={`informations for ${data.name} | DD2`}>
+  <PageHeader>Informations on {data.name}</PageHeader>
   <Loader />
   <div class="spacer"></div>
-  <PlayerData wsid={wsid} />
-  <div class="spacer"></div>
-  <span>
-    See informations on {playerInfo.name} over @
-    <a href={playerInfo.meta.displayURL} target="_blank" rel="noreferrer">
-      trackmania.io
-    </a>
-  </span>
+  <PlayerData data={data} />
   {
-    twitch && (
+    data.twitchUser && (
       <div
         hx-swap="outerHTML"
-        hx-get={"/api/user/streaming/" + twitch}
+        hx-get={"/api/user/streaming/" + data.twitchUser}
         hx-trigger="load"
         hx-target="this"
       />
-    )
-  }
-  {
-    !twitch && (
-      <div>
-        If this player should have a twitch username, contact @fantomitechno on
-        Discord to add it manually!
-      </div>
     )
   }
 </GlobalLayout>

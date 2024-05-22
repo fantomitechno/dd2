@@ -1,21 +1,19 @@
 ---
-import { getPlayerData } from "../../utils/api";
+import type { PlayerData } from "../../types/internal_api";
 import { heightToFloor } from "../../utils/floor";
 import { timeDifference } from "../../utils/time";
 import Section from "../Section.astro";
 
 interface Props {
-  wsid: string;
+  data: PlayerData;
 }
 
-const { wsid } = Astro.props;
-
-const data = await getPlayerData(wsid);
+const { data } = Astro.props;
 ---
 
 <div
   hx-swap="outerHTML"
-  hx-get={"/api/user/" + wsid}
+  hx-get={"/api/user/" + data.wsid}
   hx-trigger="every 20s"
   hx-target="this"
 >

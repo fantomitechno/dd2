@@ -36,8 +36,16 @@ type Overview = {
   ts: number
 }
 
+type TwitchUser = {
+  display_name: string,
+  user_id: string,
+  twitch_name: string
+}
+
 type Leaderboard = UserLeaderboard[]
 
 type LiveLeaderboard = UserLiveLeaderboard[]
 
-export type { UserLeaderboard, UserLive, Leaderboard, LiveLeaderboard, Overview }
+type TwitchUsers = TwitchUser[]
+
+export type { UserLeaderboard, UserLive, Leaderboard, LiveLeaderboard, Overview, TwitchUser, TwitchUsers }
