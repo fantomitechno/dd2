@@ -2,6 +2,7 @@ import type { Leaderboard, LiveLeaderboard, TwitchUsers, UserLeaderboard, UserLi
 import type { GobalLiveHeight, PlayerData } from "../types/internal_api";
 import { addPbToCache, getPb, getRoute } from "./cache";
 import { getTwitchForWsid } from "./cache/twitch_cache";
+import { Queue } from "./queue";
 
 const getLeaderboardPage = async (page: number) => {
   const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/" + page;
@@ -13,6 +14,17 @@ const getLeaderboardPage = async (page: number) => {
   return data.sort((a, b) => a.rank - b.rank);
 }
 
+const getPlayerPb = async (wsid: string) => {
+  const PB_ROUTE = "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
+  const dataPb: UserLeaderboard = await getRoute(PB_ROUTE);
+
+  if (dataPb) addPbToCache(dataPb);
+
+  return dataPb;
+}
+
+const pbQueue = new Queue(getPlayerPb)
+
 const getLiveGlobalHeight = async (): Promise<GobalLiveHeight> => {
   const ROUTE = "https://dips-plus-plus.xk.io/live_heights/global";
 
@@ -23,8 +35,8 @@ const getLiveGlobalHeight = async (): Promise<GobalLiveHeight> => {
     .filter((p) => p.height > 30 && p.rank <= 100)
     .map(p => {
       const pb = getPb(p.user_id);
-      if (!pb || Date.now() - pb.ts * 1000 > 60 * 60 * 1000) {
-        getPlayerPb(p.user_id)
+      if (!pb) {
+        pbQueue.add(p.user_id);
       }
       return {
         ...p,
@@ -34,15 +46,6 @@ const getLiveGlobalHeight = async (): Promise<GobalLiveHeight> => {
     });
 }
 
-const getPlayerPb = async (wsid: string) => {
-  const PB_ROUTE = "https://dips-plus-plus.xk.io/leaderboard/" + wsid;
-  const dataPb: UserLeaderboard = await getRoute(PB_ROUTE);
-
-  addPbToCache(dataPb);
-
-  return dataPb;
-}
-
 const getPlayerData = async (wsid: string): Promise<PlayerData> => {
   const dataPb = await getPlayerPb(wsid);
 
@@ -50,7 +53,7 @@ const getPlayerData = async (wsid: string): Promise<PlayerData> => {
 
   const dataLive: UserLive = await getRoute(LIVE_ROUTE);
 
-  const connected = dataLive.last_5_points.length != 0 && Date.now() - dataLive.last_5_points[0]![1]! * 1000 > 10 * 60 * 1000;
+  const connected = dataLive.last_5_points.length != 0 && Date.now() - dataLive.last_5_points[0]![1]! * 1000 < 10 * 60 * 1000;
 
   let liveRank = 0;
   if (connected) {
