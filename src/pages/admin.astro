@@ -3,8 +3,13 @@ import GlobalLayout from "../layouts/GlobalLayout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Section from "../components/Section.astro";
 
-import { getCacheSize, getPlayerCacheSize } from "../utils/cache";
+import {
+  getCacheSize,
+  getPbCacheSize,
+  getPlayerCacheSize,
+} from "../utils/cache";
 import { getVisites } from "../utils/analytics";
+import { getTwitchCacheSize } from "../utils/cache/twitch_cache";
 ---
 
 <GlobalLayout title="admin | DD2">
@@ -16,6 +21,10 @@ import { getVisites } from "../utils/analytics";
     Size of request cache: {getCacheSize()}
     <br />
     Size of player cache: {getPlayerCacheSize()}
+    <br />
+    Size of twitch cache: {getTwitchCacheSize()}
+    <br />
+    Size of pb cache: {getPbCacheSize()}
   </Section>
   <Section title="Visits">
     Got {getVisites(10 * 60 * 1000)} in the last 10 minutes

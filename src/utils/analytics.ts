@@ -14,7 +14,7 @@ const addVisite = (ip: string) => {
 }
 
 const getVisites = (time: number) => {
-  return Object.entries(analytics).filter((_, date) => Date.now() - date > time).length;
+  return Object.entries(analytics).filter((_, date) => Date.now() - date < time).length;
 }
 
 export { addVisite, getVisites }
