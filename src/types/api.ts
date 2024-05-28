@@ -29,6 +29,7 @@ type Overview = {
   height_fallen: number,
   jumps: number,
   nb_players_climbing: number,
+  nb_climbing_shallow_dip: number,
   nb_players_live: number,
   players: number,
   resets: number,
