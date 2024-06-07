@@ -11,7 +11,7 @@ let cache: {
   }
 } = {};
 
-const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 * 20): Promise<any> => {
+const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 * 10): Promise<any> => {
   if (cache[route] && Date.now() - cache[route]!.timestamp < cacheTime) {
     return cache[route]!.data;
   }

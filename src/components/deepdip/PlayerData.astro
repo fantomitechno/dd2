@@ -14,7 +14,7 @@ const { data } = Astro.props;
 <div
   hx-swap="outerHTML"
   hx-get={"/api/user/" + data.wsid}
-  hx-trigger="every 20s"
+  hx-trigger="every 10s"
   hx-target="this"
 >
   <Section title="Informations on pb">
