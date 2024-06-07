@@ -18,6 +18,7 @@ const getRoute = async (route: string, text: boolean = false, cacheTime = 1000 *
 
   const response = await fetch(route, { headers });
   if (!response.ok) {
+    if (cache[route]) return cache[route]!.data;
     cache[route] = { timestamp: Date.now(), data: null };
     return null
   };
