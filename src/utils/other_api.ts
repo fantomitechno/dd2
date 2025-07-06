@@ -11,7 +11,6 @@ const getLeaderboardPage = async (type: string, page: number) => {
   const ROUTE =
     "https://dips-plus-plus.xk.io/map/" + maps[type] + "/leaderboard/" + page;
 
-  console.log(ROUTE);
   const data: Leaderboard = await getRoute(ROUTE);
 
   data.forEach((v) => addPbToCache(type, v));
