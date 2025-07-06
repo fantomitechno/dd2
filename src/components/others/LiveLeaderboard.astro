@@ -1,5 +1,6 @@
 ---
 import type { LiveLeaderboard } from "../../types/api";
+import { heightToFloorCustom } from "../../utils/floor";
 import { getLiveGlobalHeight } from "../../utils/other_api";
 import { timeDifference } from "../../utils/time";
 
@@ -19,12 +20,16 @@ const now = Date.now();
   <tr>
     <td> Curent Rank* </td>
     <td> Name </td>
+    <td> Floor </td>
     <td> Height </td>
     <td> PB Rank </td>
     <td> PB </td>
+    <td> PB Floor </td>
     <td> Last update**</td>
   </tr>
   <tr id="spacer">
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -38,9 +43,15 @@ const now = Date.now();
         <tr>
           <td>{player.rank}</td>
           <td>{player.display_name}</td>
+          <td>{heightToFloorCustom(type, player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
           <td>{player.pbRank ?? "N/A"}</td>
           <td>{player.pbHeight?.toFixed(2) ?? "N/A"}</td>
+          <td>
+            {player.pbHeight
+              ? heightToFloorCustom(type, player.pbHeight)
+              : "N/A"}
+          </td>
           <td>{timeDifference(now, player.ts * 1000)}</td>
         </tr>
       );
