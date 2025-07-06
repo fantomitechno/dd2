@@ -13,21 +13,13 @@ const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
   <div class="spacer"></div>
 
   <span>
-    {page > 0 && <a href={"/leaderboard?page=0"}>{"<<-"}</a>}
-    {page > 0 && <a href={"/leaderboard?page=" + (page - 1)}>{"<--"}</a>}
-    <a href={"/leaderboard?page=" + (page + 1)}>{"-->"}</a>
+    {page > 0 && <a href={"/slip/leaderboard?page=0"}>{"<<-"}</a>}
+    {page > 0 && <a href={"/slip/leaderboard?page=" + (page - 1)}>{"<--"}</a>}
+    <a href={"/slip/leaderboard?page=" + (page + 1)}>{"-->"}</a>
   </span>
   <div class="spacer"></div>
   <span>
     I can't build a "go to the last page" button due to how the API is made.
-  </span>
-  <span>
-    To explain quickly with data I had when I developped this page: there was
-    9714 players on the leaderboard but 10908 players registred. The first
-    number I got it but just going by hand to the last page, the second by
-    asking the API. It's not doable to do the first method each time I need to
-    render the page, so I don't give a "go to last page" button sadly... but if
-    that can help by the time of writing this sentence,
-    <a href="/leaderboard?page=101"> this is the last page </a>
+    Sorry (look at DeepDip2's leaderboard for more explanation)
   </span>
 </GlobalLayout>
