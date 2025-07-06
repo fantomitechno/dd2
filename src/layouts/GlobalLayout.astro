@@ -46,6 +46,9 @@ const description = d || "falling right now";
 
 const icon = "/favicon.ico";
 
+const pages = Astro.url.pathname.split("/").filter((s) => s.length);
+const type = pages.length > 1 ? "/" + pages[0] : "";
+
 addVisite(Astro.request.headers.get("X-Forwarded-For") ?? "no-ip-huh?");
 ---
 
@@ -82,7 +85,7 @@ addVisite(Astro.request.headers.get("X-Forwarded-For") ?? "no-ip-huh?");
   </head>
   <body>
     <div id="page-contents">
-      <Navbar />
+      <Navbar type={type} />
       <slot />
     </div>
     <Footer />

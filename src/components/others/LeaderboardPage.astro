@@ -1,0 +1,55 @@
+---
+import { getLeaderboardPage } from "../../utils/other_api";
+import { timeDifference } from "../../utils/time";
+
+interface Props {
+  page: number;
+}
+
+const { page } = Astro.props;
+
+const pages = Astro.url.pathname.split("/").filter((s) => s.length);
+const type = pages.length > 1 ? pages[0]! : "";
+const players = await getLeaderboardPage(type, page);
+---
+
+<table>
+  <tr>
+    <td> Rank </td>
+    <td> Name </td>
+    <td> Height </td>
+    <td> Obtained </td>
+  </tr>
+  <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  {
+    players.map((player) => {
+      return (
+        <tr>
+          <td>{player.rank}</td>
+          <td>{player.name}</td>
+          <td>{player.pos[1]!.toFixed(2)}</td>
+          <td> {timeDifference(Date.now(), player.ts * 1000)} </td>
+        </tr>
+      );
+    })
+  }
+</table>
+
+<style>
+  table {
+    width: 100%;
+  }
+
+  tr {
+    margin: 0.2rem 0;
+  }
+
+  .spacer {
+    height: 1rem;
+  }
+</style>

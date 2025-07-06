@@ -1,0 +1,63 @@
+---
+import type { LiveLeaderboard } from "../../types/api";
+import { getLiveGlobalHeight } from "../../utils/other_api";
+import { timeDifference } from "../../utils/time";
+
+const pages = Astro.url.pathname.split("/").filter((s) => s.length);
+const type = pages.length > 1 ? pages[0]! : "";
+const players = await getLiveGlobalHeight(type);
+
+const now = Date.now();
+---
+
+<table
+  hx-swap="outerHTML"
+  hx-get={"/" + type + "/api/live"}
+  hx-trigger="every 10s"
+  hx-target="this"
+>
+  <tr>
+    <td> Curent Rank* </td>
+    <td> Name </td>
+    <td> Height </td>
+    <td> PB Rank </td>
+    <td> PB </td>
+    <td> Last update**</td>
+  </tr>
+  <tr id="spacer">
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  {
+    players.map((player) => {
+      return (
+        <tr>
+          <td>{player.rank}</td>
+          <td>{player.display_name}</td>
+          <td>{player.height.toFixed(2)}</td>
+          <td>{player.pbRank ?? "N/A"}</td>
+          <td>{player.pbHeight?.toFixed(2) ?? "N/A"}</td>
+          <td>{timeDifference(now, player.ts * 1000)}</td>
+        </tr>
+      );
+    })
+  }
+
+  <style is:inline>
+    table {
+      width: 100%;
+    }
+
+    tr {
+      margin: 0.2rem 0;
+    }
+
+    .spacer {
+      margin: 0.5rem;
+    }
+  </style>
+</table>

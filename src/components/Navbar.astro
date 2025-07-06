@@ -1,13 +1,37 @@
 ---
 import Link from "../components/Link.astro";
+
+interface Props {
+  type: string | undefined;
+}
+
+const { type } = Astro.props;
 ---
 
 <nav class="nav">
-  <Link href="/leaderboard" activeClass="active" exact>leaderboard</Link>
-  <Link href="/live" activeClass="active">live ranking</Link>
-  <Link href="/overview" activeClass="active">overview</Link>
+  <Link href="/leaderboard" activeClass="active" exact={false}> DeepDip2 </Link>
+  <Link href="/slip/leaderboard" activeClass="active" exact={false}>
+    DeepSlip
+  </Link>
   <Link href="/" activeClass="active" exact={true}>about this website</Link>
 </nav>
+{
+  Astro.url.pathname != "/" && (
+    <nav class="nav">
+      <Link href={type + "/leaderboard"} activeClass="active" exact>
+        leaderboard
+      </Link>
+      <Link href={type + "/live"} activeClass="active">
+        live ranking
+      </Link>
+      {type == "" && (
+        <Link href={type + "/overview"} activeClass="active">
+          overview
+        </Link>
+      )}
+    </nav>
+  )
+}
 
 <style>
   .nav {
