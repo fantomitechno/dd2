@@ -42,7 +42,9 @@ const now = Date.now();
       return (
         <tr>
           <td>{player.rank}</td>
-          <td>{player.display_name}</td>
+          <td>
+            <a href={"/user/" + player.user_id}>{player.display_name}</a>
+          </td>
           <td>{heightToFloorCustom(type, player.height)}</td>
           <td>{player.height.toFixed(2)}</td>
           <td>{player.pbRank ?? "N/A"}</td>

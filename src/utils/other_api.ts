@@ -18,7 +18,10 @@ const getLeaderboardPage = async (type: string, page: number) => {
   return data.sort((a, b) => a.rank - b.rank);
 };
 
-const getLiveGlobalHeight = async (type: string): Promise<GobalLiveHeight> => {
+const getLiveGlobalHeight = async (
+  type: string,
+  filter: boolean = true
+): Promise<GobalLiveHeight> => {
   const ROUTE =
     "https://dips-plus-plus.xk.io/map/" + maps[type] + "/live_heights";
 
@@ -26,7 +29,7 @@ const getLiveGlobalHeight = async (type: string): Promise<GobalLiveHeight> => {
 
   return data
     .sort((a, b) => b.height - a.height)
-    .filter((p) => p.height > 30 && p.rank <= 100)
+    .filter((p) => (p.height > 30 && p.rank <= 100) || !filter)
     .map((p) => {
       const pb = getPb(type, p.user_id);
       return {

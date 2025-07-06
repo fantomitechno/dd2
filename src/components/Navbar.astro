@@ -9,14 +9,24 @@ const { type } = Astro.props;
 ---
 
 <nav class="nav">
-  <Link href="/leaderboard" activeClass="active" exact={false}> DeepDip2 </Link>
-  <Link href="/slip/leaderboard" activeClass="active" exact={false}>
+  <Link
+    href="/leaderboard"
+    activeClass="active"
+    match={(url) => ["/leaderboard", "/live", "/overview"].includes(url)}
+  >
+    DeepDip2
+  </Link>
+  <Link
+    href="/slip/leaderboard"
+    activeClass="active"
+    match={(url) => url.includes("slip")}
+  >
     DeepSlip
   </Link>
   <Link href="/" activeClass="active" exact={true}>about this website</Link>
 </nav>
 {
-  Astro.url.pathname != "/" && (
+  Astro.url.pathname != "/" && type != "/user" && (
     <nav class="nav">
       <Link href={type + "/leaderboard"} activeClass="active" exact>
         leaderboard

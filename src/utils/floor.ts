@@ -56,7 +56,7 @@ export const heightToFloor = (height: number) => {
 };
 
 export const heightToFloorCustom = (type: string, height: number) => {
-  let floorRes = "-1";
+  let floorRes = height.toFixed(0) + "m";
   for (const [floor, floorHeight] of Object.entries(
     customFloorHeights[type] || {}
   )) {

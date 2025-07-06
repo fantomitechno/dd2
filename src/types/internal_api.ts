@@ -11,7 +11,6 @@ type LiveHeight = {
 type PlayerData = {
   name: string;
   wsid: string;
-  twitchUser: string | undefined;
   pbRank: number;
   pbHeight: number;
   pbTs: number;
@@ -19,8 +18,8 @@ type PlayerData = {
   liveRank: number;
   liveHeight: number | undefined;
   liveTs: number | undefined;
-}
+};
 
 type GobalLiveHeight = LiveHeight[];
 
-export type { LiveHeight, GobalLiveHeight, PlayerData }
+export type { LiveHeight, GobalLiveHeight, PlayerData };

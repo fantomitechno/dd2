@@ -1,12 +1,26 @@
 ---
 import PlayerData from "../../../components/deepdip/PlayerData.astro";
 import { getPlayerData } from "../../../utils/api";
+import { getPb } from "../../../utils/cache/pb_other_cache";
+import { getLiveGlobalHeight } from "../../../utils/other_api";
+import { getMaps } from "../../../utils/other_maps";
 
 const { wsid } = Astro.params;
 
 if (!wsid) return Astro.redirect("/", 303);
 
 const data = await getPlayerData(wsid);
+const maps = getMaps();
+
+const datas = await Promise.all(
+  maps.map(async (m) => {
+    return {
+      map: m,
+      data: getPb(m, wsid),
+      pb: (await getLiveGlobalHeight(m, false)).find((u) => u.user_id === wsid),
+    };
+  })
+);
 ---
 
-<PlayerData data={data} />
+<PlayerData deepdipData={data} otherMaps={datas} />

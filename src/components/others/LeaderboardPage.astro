@@ -34,7 +34,9 @@ const players = await getLeaderboardPage(type, page);
       return (
         <tr>
           <td>{player.rank}</td>
-          <td>{player.name}</td>
+          <td>
+            <a href={"/user/" + player.wsid}>{player.name}</a>
+          </td>
           <td>{heightToFloorCustom(type, player.pos[1]!)}</td>
           <td>{player.pos[1]!.toFixed(2)}</td>
           <td> {timeDifference(Date.now(), player.ts * 1000)} </td>

@@ -1,64 +1,143 @@
 ---
-import type { PlayerData } from "../../types/internal_api";
-import { heightToFloor } from "../../utils/floor";
+import type { LiveHeight, PlayerData } from "../../types/internal_api";
+import type { UserLeaderboard } from "../../types/other_api";
+import { heightToFloor, heightToFloorCustom } from "../../utils/floor";
+import { getMapName } from "../../utils/other_maps";
 import { timeDifference } from "../../utils/time";
 import Section from "../Section.astro";
 
 interface Props {
-  data: PlayerData;
+  deepdipData: PlayerData | undefined;
+  otherMaps: {
+    data: UserLeaderboard | undefined;
+    map: string;
+    pb: LiveHeight | undefined;
+  }[];
 }
 
-const { data } = Astro.props;
+const { deepdipData, otherMaps } = Astro.props;
 ---
 
 <div
   hx-swap="outerHTML"
-  hx-get={"/api/user/" + data.wsid}
+  hx-get={"/api/user/" +
+    (deepdipData
+      ? deepdipData.wsid
+      : otherMaps.find((e) => e.data)?.data?.wsid)}
   hx-trigger="every 10s"
   hx-target="this"
 >
-  <Section title="Informations on pb">
-    <table>
-      <tr>
-        <td> Rank </td>
-        <td> PB Floor </td>
-        <td> PB </td>
-        <td> PB obtained </td>
-      </tr>
-      <tr id="spacer">
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td> {data.pbRank} </td>
-        <td> {heightToFloor(data.pbHeight)} </td>
-        <td> {data.pbHeight.toFixed(2)} </td>
-        <td> {timeDifference(Date.now(), data.pbTs * 1000)} </td>
-      </tr>
-    </table>
-  </Section>
   {
-    data.connected && (
-      <Section title="Informations on current">
-        <table>
-          <tr>
-            <td> Current rank </td>
-            <td> Current Floor </td>
-            <td> Current Height </td>
-            <td> Last update* </td>
-          </tr>
-          <tr>
-            <td> {data.liveRank} </td>
-            <td> {heightToFloor(data.liveHeight!)} </td>
-            <td> {data.liveHeight!.toFixed(2)} </td>
-            <td>{timeDifference(Date.now(), data.liveTs! * 1000)}</td>
-          </tr>
-        </table>
-        <div class="spacer" />
-        <span> * Last update from their plug-in </span>
-      </Section>
+    deepdipData && (
+      <>
+        <Section title="Informations on DeepDip2 PB">
+          <table>
+            <tr>
+              <td> Rank </td>
+              <td> PB Floor </td>
+              <td> PB </td>
+              <td> PB obtained </td>
+            </tr>
+            <tr id="spacer">
+              <td />
+              <td />
+              <td />
+              <td />
+            </tr>
+            <tr>
+              <td> {deepdipData.pbRank} </td>
+              <td> {heightToFloor(deepdipData.pbHeight)} </td>
+              <td> {deepdipData.pbHeight.toFixed(2)} </td>
+              <td> {timeDifference(Date.now(), deepdipData.pbTs * 1000)} </td>
+            </tr>
+          </table>
+        </Section>
+
+        {deepdipData?.connected && (
+          <Section title="Informations on current DeepDip2 Run">
+            <table>
+              <tr>
+                <td> Current rank </td>
+                <td> Current Floor </td>
+                <td> Current Height </td>
+                <td> Last update* </td>
+              </tr>
+              <tr>
+                <td> {deepdipData.liveRank} </td>
+                <td> {heightToFloor(deepdipData.liveHeight!)} </td>
+                <td> {deepdipData.liveHeight!.toFixed(2)} </td>
+                <td>
+                  {timeDifference(Date.now(), deepdipData.liveTs! * 1000)}
+                </td>
+              </tr>
+            </table>
+            <div class="spacer" />
+            <span> * Last update from their plug-in </span>
+          </Section>
+        )}
+      </>
+    )
+  }
+
+  {
+    otherMaps.map(
+      (mapData) =>
+        mapData.data && (
+          <>
+            <Section
+              title={"Informations on " + getMapName(mapData.map) + " PB"}
+            >
+              <table>
+                <tr>
+                  <td> Rank </td>
+                  <td> PB Floor </td>
+                  <td> PB </td>
+                  <td> PB obtained </td>
+                </tr>
+                <tr id="spacer">
+                  <td />
+                  <td />
+                  <td />
+                  <td />
+                </tr>
+                <tr>
+                  <td> {mapData.data.rank} </td>
+                  <td>
+                    {heightToFloorCustom(mapData.map, mapData.data.pos[1]!)}
+                  </td>
+                  <td> {mapData.data.pos[1]!.toFixed(2)} </td>
+                  <td>{timeDifference(Date.now(), mapData.data.ts * 1000)}</td>
+                </tr>
+              </table>
+            </Section>
+            {mapData.pb && (
+              <Section
+                title={
+                  "Informations on current " + getMapName(mapData.map) + " Run"
+                }
+              >
+                <table>
+                  <tr>
+                    <td> Current rank </td>
+                    <td> Current Floor </td>
+                    <td> Current Height </td>
+                    <td> Last update* </td>
+                  </tr>
+                  <tr>
+                    <td> {mapData.pb.rank} </td>
+                    <td>
+                      {heightToFloorCustom(mapData.map, mapData.pb.height)}
+                    </td>
+                    <td> {mapData.pb.height.toFixed(2)} </td>
+                    <td>{timeDifference(Date.now(), mapData.pb.ts * 1000)}</td>
+                  </tr>
+                </table>
+                <div class="spacer" />
+                <span> * Last update from their plug-in </span>
+              </Section>
+            )}
+          </>
+        )
     )
   }
 

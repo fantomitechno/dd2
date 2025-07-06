@@ -5,24 +5,45 @@ import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import Loader from "../../components/Loader.astro";
 import PlayerData from "../../components/deepdip/PlayerData.astro";
 import { getPlayerData } from "../../utils/api";
+import { getMaps } from "../../utils/other_maps";
+import { getPb } from "../../utils/cache/pb_other_cache";
+import { getTwitchForDisplayName } from "../../utils/cache/twitch_cache";
+import { getLiveGlobalHeight } from "../../utils/other_api";
 
 const { wsid } = Astro.params;
 
 if (!wsid) return Astro.redirect("/", 303);
 
 const data = await getPlayerData(wsid);
+const maps = getMaps();
+
+const datas = await Promise.all(
+  maps.map(async (m) => {
+    return {
+      map: m,
+      data: getPb(m, wsid),
+      pb: (await getLiveGlobalHeight(m, false)).find((u) => u.user_id === wsid),
+    };
+  })
+);
+
+let name;
+if (data) name = data.name;
+else name = datas.find((e) => e.data)?.data?.name;
+
+const twitch = await getTwitchForDisplayName(name ?? "");
 ---
 
-<GlobalLayout title={`informations for ${data.name} | DD2`}>
-  <PageHeader>Informations on {data.name}</PageHeader>
+<GlobalLayout title={`informations for ${name}`}>
+  <PageHeader>Informations on {name}</PageHeader>
   <Loader />
   <div class="spacer"></div>
-  <PlayerData data={data} />
+  <PlayerData deepdipData={data} otherMaps={datas} />
   {
-    data.twitchUser && (
+    twitch && (
       <div
         hx-swap="outerHTML"
-        hx-get={"/api/user/streaming/" + data.twitchUser}
+        hx-get={"/api/user/streaming/" + twitch}
         hx-trigger="load"
         hx-target="this"
       />

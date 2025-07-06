@@ -33,12 +33,15 @@ export interface Props {
   class?: AstroBuiltinAttributes["class:list"];
   activeClass?: AstroBuiltinAttributes["class:list"];
   exact?: boolean;
+  match?: (url: string) => boolean;
 }
 
-const { href, class: cls, activeClass, exact } = Astro.props;
-const matches = exact
-  ? Astro.url.pathname === href
-  : Astro.url.pathname.startsWith(href);
+const { href, class: cls, activeClass, exact, match } = Astro.props;
+
+const match_function = match || (() => false);
+const matches =
+  (exact ? Astro.url.pathname === href : Astro.url.pathname.startsWith(href)) ||
+  match_function(Astro.url.pathname);
 ---
 
 <a href={href} class:list={[cls, matches && activeClass]}>
