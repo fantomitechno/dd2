@@ -35,7 +35,7 @@ const getLiveGlobalHeight = async (
       return {
         ...p,
         pbRank: pb?.rank,
-        pbHeight: pb?.pos[2] || 0,
+        pbHeight: pb?.pos[1] || 0,
       };
     });
 };
