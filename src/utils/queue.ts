@@ -8,13 +8,13 @@ class Queue<T> {
     this.queue = queue;
     this.time = time;
     setInterval(() => {
-      if (this.queue.length == 0) this.action(this.queue.shift()!);
+      if (this.queue.length > 0) this.action(this.queue.shift()!);
     }, this.time);
   }
 
   add = (element: T) => {
     this.queue.push(element);
-  }
+  };
 }
 
 export { Queue };
