@@ -2,8 +2,11 @@
 import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import PageHeader from "../../components/others/DSPageHeader.astro";
 import LeaderboardPage from "../../components/others/LeaderboardPage.astro";
+import { getLeaderboardSize } from "../../utils/other_api";
 
 const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
+
+const leaderboardSize = await getLeaderboardSize("slip");
 ---
 
 <GlobalLayout title="leaderboard | DS">
@@ -15,11 +18,17 @@ const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
   <span>
     {page > 0 && <a href={"/slip/leaderboard?page=0"}>{"<<-"}</a>}
     {page > 0 && <a href={"/slip/leaderboard?page=" + (page - 1)}>{"<--"}</a>}
-    <a href={"/slip/leaderboard?page=" + (page + 1)}>{"-->"}</a>
-  </span>
-  <div class="spacer"></div>
-  <span>
-    I can't build a "go to the last page" button due to how the API is made.
-    Sorry (look at DeepDip2's leaderboard for more explanation)
+    {
+      page < leaderboardSize.pages - 1 && (
+        <a href={"/slip/leaderboard?page=" + (page + 1)}>{"-->"}</a>
+      )
+    }
+    {
+      page < leaderboardSize.pages - 1 && (
+        <a href={"/slip/leaderboard?page=" + (leaderboardSize.pages - 1)}>
+          {"->>"}
+        </a>
+      )
+    }
   </span>
 </GlobalLayout>

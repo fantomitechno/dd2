@@ -1,4 +1,8 @@
-import type { Leaderboard, LiveLeaderboard } from "../types/other_api";
+import type {
+  Leaderboard,
+  LiveLeaderboard,
+  LeaderboardLen,
+} from "../types/other_api";
 import type { GobalLiveHeight } from "../types/internal_api";
 import { addPbToCache, getPb } from "./cache/pb_other_cache";
 import { getRoute } from "./cache";
@@ -40,4 +44,12 @@ const getLiveGlobalHeight = async (
     });
 };
 
-export { getLeaderboardPage, getLiveGlobalHeight };
+const getLeaderboardSize = async (type: string) => {
+  const ROUTE =
+    "https://dips-plus-plus.xk.io/map/" + maps[type] + "/leaderboard/len";
+
+  const data: LeaderboardLen = await getRoute(ROUTE, false, 60 * 60 * 1000);
+  return data;
+};
+
+export { getLeaderboardPage, getLiveGlobalHeight, getLeaderboardSize };

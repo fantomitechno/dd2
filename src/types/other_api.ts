@@ -21,6 +21,11 @@ type UserLiveLeaderboard = {
   vel: unknown;
 };
 
+type LeaderboardLen = {
+  len: number;
+  pages: number;
+};
+
 type Leaderboard = UserLeaderboard[];
 
 type LiveLeaderboard = UserLiveLeaderboard[];
@@ -30,4 +35,5 @@ export type {
   UserLiveLeaderboard,
   Leaderboard,
   LiveLeaderboard,
+  LeaderboardLen,
 };
