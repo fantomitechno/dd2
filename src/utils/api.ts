@@ -1,5 +1,6 @@
 import type {
   Leaderboard,
+  LeaderboardLen,
   LiveLeaderboard,
   TwitchUsers,
   UserLeaderboard,
@@ -91,10 +92,18 @@ const getTwitchUsers = async () => {
   return data;
 };
 
+const getLeaderboardSize = async () => {
+  const ROUTE = "https://dips-plus-plus.xk.io/leaderboard/global/len";
+
+  const data: LeaderboardLen = await getRoute(ROUTE, false, 60 * 60 * 1000);
+  return data;
+};
+
 export {
   getLeaderboardPage,
   getLiveGlobalHeight,
   getPlayerData,
   getPlayerPb,
   getTwitchUsers,
+  getLeaderboardSize,
 };

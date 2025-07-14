@@ -42,6 +42,11 @@ type TwitchUser = {
   twitch_name: string;
 };
 
+type LeaderboardLen = {
+  len: number;
+  pages: number;
+};
+
 type Leaderboard = UserLeaderboard[];
 
 type LiveLeaderboard = UserLiveLeaderboard[];
@@ -52,6 +57,7 @@ export type {
   UserLeaderboard,
   UserLive,
   Leaderboard,
+  LeaderboardLen,
   LiveLeaderboard,
   Overview,
   TwitchUser,
