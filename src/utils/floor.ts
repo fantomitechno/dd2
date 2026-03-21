@@ -41,7 +41,20 @@ const customFloorHeights: { [map: string]: { [floor: string]: number } } = {
     "17": 2185.16,
     "18": 2317.66,
     "19": 2449.52,
-    FIN: 2709,
+    Fin: 2709,
+  },
+  slid: {
+    "0": 10,
+    "1": 218,
+    "2": 312,
+    "3": 412,
+    "4": 592,
+    "5": 720,
+    "6": 825,
+    "7": 984,
+    "8": 1136,
+    "9": 1316,
+    Fin: 1416,
   },
 };
 
@@ -58,7 +71,7 @@ export const heightToFloor = (height: number) => {
 export const heightToFloorCustom = (type: string, height: number) => {
   let floorRes = height.toFixed(0) + "m";
   for (const [floor, floorHeight] of Object.entries(
-    customFloorHeights[type] || {}
+    customFloorHeights[type] || {},
   )) {
     if (height >= floorHeight) {
       floorRes = floor;
