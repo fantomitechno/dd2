@@ -3,6 +3,7 @@ import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import PageHeader from "../../components/others/DSPageHeader.astro";
 import LeaderboardPage from "../../components/others/LeaderboardPage.astro";
 import { getLeaderboardSize } from "../../utils/other_api";
+import { getMapName } from "../../utils/other_maps";
 
 const { type } = Astro.params;
 const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
@@ -10,7 +11,7 @@ const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
 const leaderboardSize = await getLeaderboardSize(type!);
 ---
 
-<GlobalLayout title="leaderboard | DS">
+<GlobalLayout title={"leaderboard | " + getMapName(type!)}>
   <PageHeader>Leaderboard</PageHeader>
 
   <LeaderboardPage page={page} type={type!} />

@@ -3,10 +3,11 @@ import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import PageHeader from "../../components/others/DSPageHeader.astro";
 import LiveLeaderboard from "../../components/others/LiveLeaderboard.astro";
 import Loader from "../../components/Loader.astro";
+import { getMapName } from "../../utils/other_maps";
 const { type } = Astro.params;
 ---
 
-<GlobalLayout title="live ranking | DS">
+<GlobalLayout title={"live ranking | " + getMapName(type!)}>
   <PageHeader>Live ranking</PageHeader>
   <Loader />
   <div class="spacer"></div>

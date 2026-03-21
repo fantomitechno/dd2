@@ -1,5 +1,6 @@
 const maps: { [name: string]: string } = {
   slip: "DeepSlip",
+  slid: "Deep Slid",
 };
 
 const getMaps = () => Object.keys(maps);

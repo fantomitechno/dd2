@@ -25,7 +25,7 @@ const getLeaderboardPage = async (type: string, page: number) => {
 
 const getLiveGlobalHeight = async (
   type: string,
-  filter: boolean = true
+  filter: boolean = true,
 ): Promise<GobalLiveHeight> => {
   const ROUTE =
     "https://dips-plus-plus.xk.io/map/" + maps[type] + "/live_heights";

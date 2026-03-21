@@ -55,7 +55,6 @@ import UnderlinedHeading from "../UnderlinedHeading.astro";
 <style>
   header {
     margin-bottom: 1.5rem;
-    padding-left: 6rem;
     position: relative;
     display: flex;
     min-height: 5.5em;
@@ -65,21 +64,6 @@ import UnderlinedHeading from "../UnderlinedHeading.astro";
 
   .has-subtitle {
     margin-bottom: 1.75rem;
-  }
-
-  header::before {
-    content: "";
-    position: absolute;
-    width: 5rem;
-    height: 5rem;
-    top: 4px;
-    left: -0.5em;
-    transform: rotate(15deg);
-    background-image: url("../../assets/deep_slip.webp");
-    background-size: 5rem auto;
-    background-position: center;
-    background-repeat: no-repeat;
-    border: 0.2rem solid #e2931d;
   }
 
   .title {
