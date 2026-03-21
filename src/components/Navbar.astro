@@ -23,6 +23,13 @@ const { type } = Astro.props;
   >
     DeepSlip
   </Link>
+  <Link
+    href="/slid/leaderboard"
+    activeClass="active"
+    match={(url) => url.includes("slid")}
+  >
+    Deep Slid
+  </Link>
   <Link href="/" activeClass="active" exact={true}>about this website</Link>
 </nav>
 {
