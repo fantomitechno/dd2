@@ -9,6 +9,7 @@ import { getRoute } from "./cache";
 
 const maps: { [name: string]: string } = {
   slip: "DeepSlip_1fwwLrYCb7Ku7Tqcl0",
+  slid: "cSX2JCluWExdXvADIJd9qVZFX3n",
 };
 
 const getLeaderboardPage = async (type: string, page: number) => {

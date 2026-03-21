@@ -1,5 +1,6 @@
 ---
 import LiveLeaderboard from "../../../components/others/LiveLeaderboard.astro";
+const { type } = Astro.params;
 ---
 
-<LiveLeaderboard />
+<LiveLeaderboard type={type!} />

@@ -3,6 +3,7 @@ import GlobalLayout from "../../layouts/GlobalLayout.astro";
 import PageHeader from "../../components/others/DSPageHeader.astro";
 import LiveLeaderboard from "../../components/others/LiveLeaderboard.astro";
 import Loader from "../../components/Loader.astro";
+const { type } = Astro.params;
 ---
 
 <GlobalLayout title="live ranking | DS">
@@ -10,7 +11,7 @@ import Loader from "../../components/Loader.astro";
   <Loader />
   <div class="spacer"></div>
 
-  <LiveLeaderboard />
+  <LiveLeaderboard type={type!} />
   <div class="spacer"></div>
   <span>
     * Current rank is the rank they have right now, imagine Lars being at the

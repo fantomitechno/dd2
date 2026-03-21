@@ -4,28 +4,35 @@ import PageHeader from "../../components/others/DSPageHeader.astro";
 import LeaderboardPage from "../../components/others/LeaderboardPage.astro";
 import { getLeaderboardSize } from "../../utils/other_api";
 
+const { type } = Astro.params;
 const page = parseInt(Astro.url.searchParams.get("page") ?? "0");
 
-const leaderboardSize = await getLeaderboardSize("slip");
+const leaderboardSize = await getLeaderboardSize(type!);
 ---
 
 <GlobalLayout title="leaderboard | DS">
   <PageHeader>Leaderboard</PageHeader>
 
-  <LeaderboardPage page={page} />
+  <LeaderboardPage page={page} type={type!} />
   <div class="spacer"></div>
 
   <span>
-    {page > 0 && <a href={"/slip/leaderboard?page=0"}>{"<<-"}</a>}
-    {page > 0 && <a href={"/slip/leaderboard?page=" + (page - 1)}>{"<--"}</a>}
+    {page > 0 && <a href={"/" + type + "/leaderboard?page=0"}>{"<<-"}</a>}
     {
-      page < leaderboardSize.pages - 1 && (
-        <a href={"/slip/leaderboard?page=" + (page + 1)}>{"-->"}</a>
+      page > 0 && (
+        <a href={"/" + type + "/leaderboard?page=" + (page - 1)}>{"<--"}</a>
       )
     }
     {
       page < leaderboardSize.pages - 1 && (
-        <a href={"/slip/leaderboard?page=" + (leaderboardSize.pages - 1)}>
+        <a href={"/" + type + "/leaderboard?page=" + (page + 1)}>{"-->"}</a>
+      )
+    }
+    {
+      page < leaderboardSize.pages - 1 && (
+        <a
+          href={"/" + type + "/leaderboard?page=" + (leaderboardSize.pages - 1)}
+        >
           {"->>"}
         </a>
       )

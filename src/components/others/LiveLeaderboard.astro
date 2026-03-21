@@ -4,8 +4,10 @@ import { heightToFloorCustom } from "../../utils/floor";
 import { getLiveGlobalHeight } from "../../utils/other_api";
 import { timeDifference } from "../../utils/time";
 
-const pages = Astro.url.pathname.split("/").filter((s) => s.length);
-const type = pages.length > 1 ? pages[0]! : "";
+interface Props {
+  type: string;
+}
+const { type } = Astro.props;
 const players = await getLiveGlobalHeight(type);
 
 const now = Date.now();

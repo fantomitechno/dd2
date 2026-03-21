@@ -36,7 +36,9 @@ export const GET: APIRoute = async ({ url }) => {
     );
   }
 
-  const data = getPb("slip", result);
+  const pages = url.pathname.split("/").filter((s) => s.length);
+  const type = pages.length > 1 ? pages[0]! : "";
+  const data = getPb(type, result);
 
   return new Response(JSON.stringify({ ...data, error: false }), {
     status: 200,
